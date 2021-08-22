@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    <item-->
+<!--        android:title="@string/modify">-->
+<!--        <menu>-->
+<!--            <item android:id="@+id/item_color"-->
+<!--                android:title="@string/zone_color" />-->
+<!--            <item android:id="@+id/item_size"-->
+<!--                android:title="@string/zone_size" />-->
+<!--        </menu>-->
+<!--    </item>-->
+
+<!--    <item-->
+<!--        android:title="@string/delete"-->
+<!--        android:id="@+id/item_delete_circle"/>-->
+<!--    <item-->
+<!--        android:title="@string/about"-->
+<!--        android:id="@+id/item_about"/>-->
+
+    <item
+        android:title="@string/log_out"
+        android:id="@+id/item_log_out"/>
+
+</menu>

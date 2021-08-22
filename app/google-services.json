@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "65763909467",
+    "project_id": "cornernews-e1944",
+    "storage_bucket": "cornernews-e1944.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65763909467:android:a57977b486269d6b53847e",
+        "android_client_info": {
+          "package_name": "com.example.cornernews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65763909467-1fgqm1hfdk1v6gvfjivg1jsgct6o5ucb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiEoJjgz4tU2aYTzSHX6U6eig8g8mwgPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "65763909467-1fgqm1hfdk1v6gvfjivg1jsgct6o5ucb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

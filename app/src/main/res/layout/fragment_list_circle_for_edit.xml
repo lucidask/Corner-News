@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ListCircleForEditFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_layout"/>
+    <RelativeLayout
+        android:id="@+id/pathRelativeOnEdit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/google_map_for_delete"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="55dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/help_button_for_edited"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_baseline_help_outline_24"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="120dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/close_help_button_for_edit"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="450dp"
+            android:background="@drawable/ic_baseline_close_24"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="120dp"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp">
+
+<!--            <androidx.appcompat.widget.AppCompatImageButton-->
+<!--                android:id="@+id/save_edited_circle"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:background="@drawable/ic_baseline_save_24"/>-->
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/linear_for_edit_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/purple_500"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekbar_for_resize_circle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:max="1000"
+            android:min="10"
+            android:progress="10"
+            android:thumbTint="@color/white"
+            android:progressTint="@color/white"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alert_category"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="15dp"/>
+
+            <RadioGroup
+                android:id="@+id/radio_group_color_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radio_green_edited"
+                    android:text="@string/green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/green"
+                    android:buttonTint="@color/green"
+                    android:textSize="15dp"
+                    android:paddingRight="10dp"/>
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radio_orange_edited"
+                    android:text="@string/orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/orange"
+                    android:buttonTint="@color/orange"
+                    android:textSize="15dp"
+                    android:paddingRight="10dp"/>
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radio_red_edited"
+                    android:text="@string/red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:buttonTint="@color/red"
+                    android:textSize="15dp"
+                    android:paddingRight="10dp"/>
+
+
+            </RadioGroup>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
+
+
+</FrameLayout>
