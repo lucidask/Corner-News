@@ -99,18 +99,18 @@
         app:layout_constraintRight_toRightOf="parent"
         android:visibility="invisible"/>
 
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textSize="16sp"
-        android:textColor="@color/white"
-        android:text="Remember Me"
-        app:layout_constraintTop_toBottomOf="@id/edit_pass"
-        app:layout_constraintBottom_toTopOf="@id/button_login"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginRight="100dp"/>
+<!--    <androidx.appcompat.widget.AppCompatCheckBox-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="5dp"-->
+<!--        android:textSize="16sp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:text="Remember Me"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/edit_pass"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/button_login"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        android:layout_marginRight="100dp"/>-->
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_login"
@@ -124,7 +124,7 @@
         app:layout_constraintBottom_toTopOf="@id/create_account"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="10dp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_forgot_password"

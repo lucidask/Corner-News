@@ -55,6 +55,7 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
     RadioGroup radioGroup;
     RelativeLayout relativeLayoutPopup;
     PopupWindow popupWindowhelp;
+    HelperDB helperDB;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +70,12 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
         title=view.findViewById(R.id.title);
         back_arrow=view.findViewById(R.id.back_perso);
         back_arrow.setOnClickListener(this);
-        title.setText("\uD83D\uDE42  "+DAO.Whologin.get(0).getUsername().toUpperCase());
+        helperDB=new HelperDB(getContext());
+        try {
+            title.setText("\uD83D\uDE42  " +helperDB.GetUserName().toUpperCase());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         log_out=view.findViewById(R.id.button_logout);
         log_out.setVisibility(View.GONE);
         seekBar=view.findViewById(R.id.seekbar_for_resize_circle);
@@ -88,9 +94,8 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
         supportMapFragment.getMapAsync(googleMap -> {
             gmap = googleMap;
             gmap.clear();
-//            getCircletoMapforEdit(gmap);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                MapFragment.circlebuftomap(gmap);
+                MapFragment.CircleBufToMap(gmap);
             }
         });
     }
@@ -111,9 +116,8 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
         GetMapLocationPossible();
         gmap.setOnMarkerClickListener(this);
         gmap.setOnCircleClickListener(this);
-//        getCircletoMapforEdit(gmap);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            MapFragment.circlebuftomap(gmap);
+            MapFragment.CircleBufToMap(gmap);
         }
     }
 
@@ -127,19 +131,6 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
         gmap.getMyLocation();
     }
 
-//    public void getCircletoMapforEdit(GoogleMap googleMap) {
-//        if (DAO.TabCircleBuf.size() > 0) {
-//            for (int i = 0; i < DAO.TabCircleBuf.size(); i++) {
-//                if (DAO.TabCircleBuf.get(i).getUsername().equals(DAO.Whologin.get(0).getUsername())) {
-//                    googleMap.addCircle(DAO.TabCircleBuf.get(i).getRond().getcircleOptions());
-//                    MarkerOptions markerOptions = new MarkerOptions().position(Objects.requireNonNull(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter()));
-//                    markerOptions.title(DAO.TabCircleBuf.get(i).getCirclename());
-//                    Marker marker = googleMap.addMarker(markerOptions);
-//                    markerList.add(marker);
-//                }
-//            }
-//        }
-//    }
     public CircleInstance redrawColorCircle(GoogleMap googleMap,LatLng latLng, int color, String name,double radius,float markerColor ){
         int k3 = (int) (Math.random() * 10 * Math.random() * 100);
         MarkerOptions markerOptions = new MarkerOptions().position(latLng)
@@ -242,9 +233,8 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-//        getCircletoMapforEdit(gmap);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            MapFragment.circlebuftomap(gmap);
+            MapFragment.CircleBufToMap(gmap);
         }
     }
 

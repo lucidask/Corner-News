@@ -235,11 +235,13 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
                     }else {
                         Toast.makeText(getContext(),"Something wrong happened! Try again please! ",
                                 Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
             }else {
-                Toast.makeText(getContext(),"Something wrong happened! Try again please! ",
+                Toast.makeText(getContext(),"Something wrong happened! You may already have account with this email! ",
                         Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }

@@ -52,6 +52,7 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
     List<Marker> markerList = new ArrayList<>();
     RelativeLayout relativeLayoutPopup;
     PopupWindow popupWindowhelp;
+    HelperDB helperDB;
 
 
 
@@ -68,7 +69,12 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
         title=view.findViewById(R.id.title);
         back_arrow=view.findViewById(R.id.back_perso);
         back_arrow.setOnClickListener(this);
-        title.setText("\uD83D\uDE42  "+DAO.Whologin.get(0).getUsername().toUpperCase());
+        helperDB=new HelperDB(getContext());
+        try {
+            title.setText("\uD83D\uDE42  " +helperDB.GetUserName().toUpperCase());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         log_out=view.findViewById(R.id.button_logout);
         log_out.setVisibility(View.GONE);
         help.setOnClickListener(this);
@@ -109,7 +115,7 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
     @Override
     public void onCircleClick(@NonNull Circle circle) {
         for (int i = 0; i < DAO.TabCircleForUserConnected.size(); i++) {
-            if (circle.getCenter().latitude == DAO.TabCircleForUserConnected.get(i).getRond().getRondLat() ||
+            if (circle.getCenter().latitude == DAO.TabCircleForUserConnected.get(i).getRond().getRondLat() &&
                     circle.getCenter().longitude == DAO.TabCircleForUserConnected.get(i).getRond().getRondLng()) {
                 deleteZone(DAO.TabCircleForUserConnected.get(i).getCirclename());
                 DAO.TabCircleForUserConnected.remove(i);
@@ -123,7 +129,7 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
     public PopupWindow showPopup(){
         PopupWindow popupWindow;
         LayoutInflater layoutInflater=(LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView=layoutInflater.inflate(R.layout.popup_help_layout,null);
+        @SuppressLint("InflateParams") View customView=layoutInflater.inflate(R.layout.popup_help_layout,null);
         popupWindow=new PopupWindow(customView, RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.showAtLocation(relativeLayoutPopup, Gravity.TOP,0,0);
         return popupWindow;
@@ -156,18 +162,13 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
             for (int i = 0; i < DAO.TabCircleForUserConnected.size(); i++) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     if(DAO.TabCircleForUserConnected.get(i).getCirclename().contains("Green")){
-                        MapFragment.drawCircleOnDBtoMap(googleMap,DAO.TabCircleForUserConnected.get(i), BitmapDescriptorFactory.HUE_GREEN,markerList);
+                        MapFragment.drawCircleInstance(googleMap,DAO.TabCircleForUserConnected.get(i), BitmapDescriptorFactory.HUE_GREEN,markerList);
                     }else if(DAO.TabCircleForUserConnected.get(i).getCirclename().contains("Orange")){
-                        MapFragment.drawCircleOnDBtoMap(googleMap,DAO.TabCircleForUserConnected.get(i),BitmapDescriptorFactory.HUE_ORANGE,markerList);
+                        MapFragment.drawCircleInstance(googleMap,DAO.TabCircleForUserConnected.get(i),BitmapDescriptorFactory.HUE_ORANGE,markerList);
                     }else {
-                        MapFragment.drawCircleOnDBtoMap(googleMap,DAO.TabCircleForUserConnected.get(i),BitmapDescriptorFactory.HUE_RED,markerList);
+                        MapFragment.drawCircleInstance(googleMap,DAO.TabCircleForUserConnected.get(i),BitmapDescriptorFactory.HUE_RED,markerList);
                     }
                 }
-//                googleMap.addCircle(DAO.TabCircleForUserConnected.get(i).getRond().getcircleOptions());
-//                MarkerOptions markerOptions = new MarkerOptions().position(Objects.requireNonNull(DAO.TabCircleForUserConnected.get(i).getRond().getcircleOptions().getCenter()));
-//                markerOptions.title(DAO.TabCircleForUserConnected.get(i).getCirclename());
-//                Marker marker = googleMap.addMarker(markerOptions);
-//                markerList.add(marker);
             }
         }
     }

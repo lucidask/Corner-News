@@ -2,6 +2,7 @@ package com.example.cornernews;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -17,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -38,9 +40,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     AppCompatEditText username;
@@ -57,10 +63,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ProgressBar progressBar;
     SignInButton bt_google_sign_in;
     GoogleSignInClient googleSignInClient;
+    HelperDB helperDB;
+    Boolean GetIfAlreadyConnect=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        helperDB= new HelperDB(getApplicationContext());
         setContentView(R.layout.activity_main);
         title=findViewById(R.id.title);
         back_arrow=findViewById(R.id.back_perso);
@@ -89,23 +98,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .requestIdToken("65763909467-1fgqm1hfdk1v6gvfjivg1jsgct6o5ucb.apps.googleusercontent.com")
                 .requestEmail().build();
         googleSignInClient= GoogleSignIn.getClient(MainActivity.this,googleSignInOptions);
-
-        FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
-        if(firebaseUser!=null){
-            for(int i=0;i<DAO.loginTab.size();i++){
-                if(DAO.loginTab.get(i).getEmail().equals(firebaseUser.getEmail())){
-                    break;
-                }
-            }
-            DAO.Whologin.clear();
-            DAO.addWhoLogin(new Login( firebaseUser.getEmail(),firebaseUser.getDisplayName()));
-            Toast.makeText(MainActivity.this,"Welcome "+DAO.Whologin.get(0).getUsername().toUpperCase(),
-                    Toast.LENGTH_SHORT).show();
+        GetWhoLogin();
+        if(GetIfAlreadyConnect){
             Intent gotomap=new Intent(MainActivity.this,ContainerFrag.class);
             gotomap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
             startActivity(gotomap);
         }
-//        checkFirstRun();
+        //        checkFirstRun();
     }
 
     @Override
@@ -126,61 +125,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
             switch (v.getId()){
                 case R.id.button_login:
                     if(DAO.isConnected(MainActivity.this)){
-                        if(!(username.getText().toString().trim().isEmpty() || password.getText().toString().trim().isEmpty())){
-                            if(DAO.loginTab.size()>0){
-                                for(int i=0;i<DAO.loginTab.size();i++){
-                                    if(DAO.loginTab.get(i).getUsername().equals(username.getText().toString()) ||
-                                            DAO.loginTab.get(i).getEmail().equals(username.getText().toString())){
-                                        tem=true;
-                                        if(DAO.Whologin.size()>0){
-                                            DAO.Whologin.clear();
-                                        }
-                                        DAO.addWhoLogin(DAO.loginTab.get(i));
-                                        break;
-                                    }
-                                }
-                                if(tem){
-                                    tem=false;
-                                    progressBar.setVisibility(View.VISIBLE);
-                                    DAO.UserAuth.signInWithEmailAndPassword(DAO.Whologin.get(0).getEmail(),password.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if(task.isSuccessful()){
-                                                FirebaseUser user=DAO.UserAuth.getCurrentUser();
-                                                assert user != null;
-                                                if(user.isEmailVerified()){
-                                                    login.setEnabled(false);
-                                                    Toast.makeText(MainActivity.this,"Welcome "+DAO.Whologin.get(0).getUsername().toUpperCase(),
-                                                            Toast.LENGTH_SHORT).show();
-                                                    Intent gotomap=new Intent(MainActivity.this,ContainerFrag.class);
-                                                    gotomap.putExtra(WHO_CALL,v.getId());
-                                                    startActivity(gotomap);
-                                                }else {
-                                                    user.sendEmailVerification();
-                                                    Toast.makeText(MainActivity.this,"Check your email to validate your account",
-                                                            Toast.LENGTH_SHORT).show();
-                                                }
-                                            }else {
-                                                progressBar.setVisibility(View.INVISIBLE);
-                                                password.getText().clear();
-                                                Toast.makeText(MainActivity.this,"Username or Password Incorrect",
+                        if(!(Objects.requireNonNull(username.getText()).toString().trim().isEmpty() || password.getText().toString().trim().isEmpty())){
+                            FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+                            if (firebaseUser != null) {
+                                if(Objects.equals(firebaseUser.getEmail(), username.getText())){
+                                    Toast.makeText(MainActivity.this,"Welcome "+helperDB.GetUserName().toUpperCase(),
+                                            Toast.LENGTH_SHORT).show();
+                                    Intent gotomap=new Intent(MainActivity.this,ContainerFrag.class);
+                                    gotomap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
+                                    startActivity(gotomap);
+                                }else {
+                                    if (googleSignInClient != null) {
+                                        googleSignInClient.signOut().addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()) {
+                                                FirebaseAuth.getInstance().signOut();
+                                                DAO.Whologin.clear();
+                                                helperDB.DeleteWhologin();
+                                                FirebaseAuth.getInstance().signOut();
+                                                Log_in();
+                                            } else {
+                                                Toast.makeText(this, "Authentication Failed" + Objects.requireNonNull(task.getException()).getMessage(),
                                                         Toast.LENGTH_SHORT).show();
                                             }
-                                        }
-                                    });
+                                        });
+                                    } else {
+                                        FirebaseAuth.getInstance().signOut();
+                                        DAO.Whologin.clear();
+                                    }
                                 }
-                                else{
-                                    username.setError("Username or Password Incorrect");
-                                    username.requestFocus();
-                                    password.setError("Username or Password Incorrect");
-                                    password.requestFocus();
-                                }
+                            }else {
+                                Log_in();
                             }
                         }else {
                             if (username.getText().toString().trim().isEmpty()) {
@@ -199,9 +180,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case R.id.create_account:
                 case R.id.text_view_forgot_password:
-                    Intent GotoCreateAccountorResetPassord=new Intent(this,ContainerFrag.class);
-                    GotoCreateAccountorResetPassord.putExtra(WHO_CALL,v.getId());
-                    startActivity(GotoCreateAccountorResetPassord);
+                    Intent GotoCreateAccountOrResetPassord=new Intent(this,ContainerFrag.class);
+                    GotoCreateAccountOrResetPassord.putExtra(WHO_CALL,v.getId());
+                    startActivity(GotoCreateAccountOrResetPassord);
                     break;
                 case R.id.bt_sign_with_google:
                     Intent intent=googleSignInClient.getSignInIntent();
@@ -209,6 +190,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
             }
         }
+
+    private void Log_in() {
+        if(DAO.loginTab.size()>0){
+            for(int i=0;i<DAO.loginTab.size();i++){
+                if(DAO.loginTab.get(i).getUsername().equals(username.getText().toString()) ||
+                        DAO.loginTab.get(i).getEmail().equals(username.getText().toString())){
+                    tem=true;
+                    helperDB.DeleteWhologin();
+                    helperDB.insertLogin(DAO.loginTab.get(i));
+                    break;
+                }
+            }
+            if(tem){
+                tem=false;
+                progressBar.setVisibility(View.VISIBLE);
+                DAO.UserAuth.signInWithEmailAndPassword(username.getText().toString().trim(),password.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            FirebaseUser user=DAO.UserAuth.getCurrentUser();
+                            assert user != null;
+                            if(user.isEmailVerified()){
+                                login.setEnabled(false);
+                                Toast.makeText(MainActivity.this,"Welcome "+helperDB.GetUserName().toUpperCase(),
+                                        Toast.LENGTH_SHORT).show();
+                                Intent gotomap=new Intent(MainActivity.this,ContainerFrag.class);
+                                gotomap.putExtra(WHO_CALL,R.id.button_login);
+                                startActivity(gotomap);
+                            }else {
+                                user.sendEmailVerification();
+                                Toast.makeText(MainActivity.this,"Check your email to validate your account",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            password.getText().clear();
+                            Toast.makeText(MainActivity.this,"Username or Password Incorrect",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+            else{
+                username.setError("Username or Password Incorrect");
+                username.requestFocus();
+                password.setError("Username or Password Incorrect");
+                password.requestFocus();
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -230,9 +261,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     progressBar.setVisibility(View.INVISIBLE);
                                     FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
                                     assert user != null;
-                                    DAO.Whologin.clear();
-                                    DAO.addWhoLogin(new Login( user.getEmail(),user.getDisplayName()));
-                                    Toast.makeText(MainActivity.this,"Welcome "+DAO.Whologin.get(0).getUsername().toUpperCase(),
+                                    helperDB.DeleteWhologin();
+                                    helperDB.insertLogin(new Login(user.getEmail(),user.getDisplayName()));
+                                    Toast.makeText(MainActivity.this,"Welcome "+helperDB.GetUserName().toUpperCase(),
                                             Toast.LENGTH_SHORT).show();
                                     Intent gotomap=new Intent(MainActivity.this,ContainerFrag.class);
                                     gotomap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
@@ -358,6 +389,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+    public void GetWhoLogin(){
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseUser!=null){
+            Toast.makeText(MainActivity.this," Welcome "+ helperDB.GetUserName().toUpperCase(),
+                    Toast.LENGTH_SHORT).show();
+            GetIfAlreadyConnect=true;
+            String UserID= firebaseUser.getUid();
+            DAO.logDatabase.child(UserID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Login userLogin=snapshot.getValue(Login.class);
+                    if(userLogin!=null){
+//                        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!! Li nan login nan "+ userLogin.getEmail()+" "+userLogin.getUsername());
+//                        DAO.addWhoLogin(new Login(userLogin.getEmail(),userLogin.getUsername()));
+                    }else {
+//                        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!! Se nan Google li ye "+ firebaseUser.getEmail()+" "+firebaseUser.getDisplayName());
+//                        DAO.addWhoLogin(new Login( firebaseUser.getEmail(), firebaseUser.getDisplayName()));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    DAO.UserAuth.signOut();
+                    Toast.makeText(MainActivity.this," Something wrong happened! Reconnect Please",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
 
     private void checkFirstRun() {
 

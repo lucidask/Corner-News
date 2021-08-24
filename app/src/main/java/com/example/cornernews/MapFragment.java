@@ -81,6 +81,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
     RelativeLayout relativeLayoutPopup;
     PopupWindow popupWindowhelp;
     GoogleSignInClient googleSignInClient;
+    HelperDB helperDB;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint({"SetTextI18n", "Range"})
@@ -94,7 +95,6 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
 //        editText = view.findViewById(R.id.sv_location);
         log_out = view.findViewById(R.id.button_logout);
         title = view.findViewById(R.id.title);
-        title.setText("\uD83D\uDE42  " + DAO.Whologin.get(0).getUsername().toUpperCase());
         btClear = view.findViewById(R.id.bt_clear);
         back_arrow = view.findViewById(R.id.back_perso);
         back_arrow.setVisibility(View.GONE);
@@ -117,11 +117,18 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         supportMapFragment.getMapAsync(this);
 //        Places.initialize(getContext(), "AIzaSyBR442ETc1ih8UI_amGf-FPE7FE7eC8yn4");
 //        editText.setFocusable(false);
+        helperDB=new HelperDB(getContext());
+        try {
+            title.setText("\uD83D\uDE42  " +helperDB.GetUserName().toUpperCase());
+        }catch (Exception e){
+         e.printStackTrace();
+        }
+        DAO.Whologin.add(new Login(Objects.requireNonNull(DAO.UserAuth.getCurrentUser()).getEmail(),helperDB.GetUserName()));
         checklocationpermission();
         DAO.updateDaoZoneFromDatabase();
         DAO.updateDaoMediaFromDatabase();
         DAO.updateListCircleListImageAndListVideo();
-        DAO.getallcirclethatuserconnectedcreated();
+        GetAllCircleThatUserConnectedCreated();
         googleSignInClient= GoogleSignIn.getClient(requireContext(), GoogleSignInOptions.DEFAULT_SIGN_IN);
         if (DAO.TabCircleBuf.isEmpty()) {
             btClear.setVisibility(View.GONE);
@@ -152,10 +159,10 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
             gmap = googleMap;
             GetMapLocationPossible();
             gmap.clear();
-            circletomap(gmap);
-            circlebuftomap(gmap);
+            CircleToMap(gmap);
+            CircleBufToMap(gmap);
         });
-        DAO.getallcirclethatuserconnectedcreated();
+        GetAllCircleThatUserConnectedCreated();
         if (DAO.TabCircleForUserConnected.size() > 0) {
             btDelete.setVisibility(View.VISIBLE);
         } else {
@@ -187,7 +194,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
                 }
                 bt_edit.setVisibility(View.GONE);
                 gmap.clear();
-                circletomap(gmap);
+                CircleToMap(gmap);
                 btClear.setVisibility(View.GONE);
                 break;
 //            case R.id.sv_location:
@@ -199,47 +206,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
 //                requireActivity().finish();
 //                break;
             case R.id.button_logout:
-                FirebaseUser firebaseuser= FirebaseAuth.getInstance().getCurrentUser();
-                if(firebaseuser!=null){
-                    if(googleSignInClient!=null){
-                        googleSignInClient.signOut().addOnCompleteListener(task -> {
-                            if(task.isSuccessful()){
-                                FirebaseAuth.getInstance().signOut();
-                                DAO.Whologin.clear();
-                                FirebaseAuth.getInstance().signOut();
-                                Intent start=new Intent(getContext(),MainActivity.class);
-                                start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                start.putExtra("EXIT",true);
-                                startActivity(start);
-                                requireActivity().finish();
-                            }else {
-                                Toast.makeText(MapFragment.this.getContext(), "Authentication Failed"+ Objects.requireNonNull(task.getException()).getMessage(),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }else {
-                        FirebaseAuth.getInstance().signOut();
-                        DAO.Whologin.clear();
-                        Intent start=new Intent(getContext(),MainActivity.class);
-                        start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        start.putExtra("EXIT",true);
-                        startActivity(start);
-                        requireActivity().finish();
-                    }
-                }
-//                DAO.Whologin.clear();
-//                FirebaseAuth.getInstance().signOut();
-//                Intent start=new Intent(getContext(),MainActivity.class);
-//                start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                start.putExtra("EXIT",true);
-//                startActivity(start);
-//                requireActivity().finish();
+                Logout();
                 break;
             case R.id.bt_refresh:
                 refreshingFragment();
@@ -276,7 +243,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
     public void drawCircle(GoogleMap googleMap,LatLng latLng, int color, String name,double radius,float markerColor ){
         int k3 = (int) (Math.random() * 10 * Math.random() * 100);
         MarkerOptions markerOptions = new MarkerOptions().position(latLng)
-                .title(DAO.Whologin.get(0).getUsername()+name+k3).icon(BitmapDescriptorFactory.defaultMarker(markerColor));
+                .title(helperDB.GetUserName()+name+k3).icon(BitmapDescriptorFactory.defaultMarker(markerColor));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
         Marker marker = googleMap.addMarker(markerOptions);
         markerList.add(marker);
@@ -289,40 +256,25 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
                         .fillColor(color)
                         .clickable(true)
         );
-        DAO.addCirlcleBuf(new CircleInstance(DAO.Whologin.get(0).getUsername(), markerOptions.getTitle(), new Rond(circ)));
+        DAO.addCirlcleBuf(new CircleInstance(helperDB.GetUserName(), markerOptions.getTitle(), new Rond(circ)));
         btClear.setVisibility(View.VISIBLE);
         bt_edit.setVisibility(View.VISIBLE);
     }
-    public void circletomap(GoogleMap googleMap) {
+    public void CircleToMap(GoogleMap googleMap) {
         if (DAO.TabCircle.size() > 0) {
             for (int i = 0; i < DAO.TabCircle.size(); i++) {
                 if(DAO.TabCircle.get(i).getCirclename().contains("Green")){
-                    drawCircleOnDBtoMap(googleMap,DAO.TabCircle.get(i),BitmapDescriptorFactory.HUE_GREEN,markerList);
-//                    googleMap.addCircle(DAO.TabCircle.get(i).getRond().getcircleOptions());
-//                    MarkerOptions markerOptions = new MarkerOptions().position(Objects.requireNonNull(DAO.TabCircle.get(i).getRond().getcircleOptions().getCenter()));
-//                    markerOptions.title(DAO.TabCircle.get(i).getCirclename());
-//                    Marker marker = gmap.addMarker(markerOptions);
-//                    markerList.add(marker);
+                    drawCircleInstance(googleMap,DAO.TabCircle.get(i),BitmapDescriptorFactory.HUE_GREEN,markerList);
                 }else if(DAO.TabCircle.get(i).getCirclename().contains("Orange")){
-                    drawCircleOnDBtoMap(googleMap,DAO.TabCircle.get(i),BitmapDescriptorFactory.HUE_ORANGE,markerList);
-//                    googleMap.addCircle(DAO.TabCircle.get(i).getRond().getcircleOptions());
-//                    MarkerOptions markerOptions = new MarkerOptions().position(Objects.requireNonNull(DAO.TabCircle.get(i).getRond().getcircleOptions().getCenter()));
-//                    markerOptions.title(DAO.TabCircle.get(i).getCirclename());
-//                    Marker marker = gmap.addMarker(markerOptions);
-//                    markerList.add(marker);
+                    drawCircleInstance(googleMap,DAO.TabCircle.get(i),BitmapDescriptorFactory.HUE_ORANGE,markerList);
                 }else {
-                    drawCircleOnDBtoMap(googleMap,DAO.TabCircle.get(i),BitmapDescriptorFactory.HUE_RED,markerList);
-//                    googleMap.addCircle(DAO.TabCircle.get(i).getRond().getcircleOptions());
-//                    MarkerOptions markerOptions = new MarkerOptions().position(Objects.requireNonNull(DAO.TabCircle.get(i).getRond().getcircleOptions().getCenter()));
-//                    markerOptions.title(DAO.TabCircle.get(i).getCirclename());
-//                    Marker marker = gmap.addMarker(markerOptions);
-//                    markerList.add(marker);
+                    drawCircleInstance(googleMap,DAO.TabCircle.get(i),BitmapDescriptorFactory.HUE_RED,markerList);
                 }
             }
         }
     }
 
-    public static void drawCircleOnDBtoMap(GoogleMap googleMap,CircleInstance circleInstance,float markerColor,List<Marker> markerList){
+    public static void drawCircleInstance(GoogleMap googleMap,CircleInstance circleInstance,float markerColor,List<Marker> markerList){
         googleMap.addCircle(circleInstance.getRond().getcircleOptions());
         MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(markerColor))
                 .position(Objects.requireNonNull(circleInstance.getRond().getcircleOptions().getCenter()));
@@ -332,23 +284,17 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
     }
 
 
-    public static void circlebuftomap(GoogleMap googleMap) {
+    public static void CircleBufToMap(GoogleMap googleMap) {
         if (DAO.TabCircleBuf.size() > 0) {
             for (int i = 0; i < DAO.TabCircleBuf.size(); i++) {
-                if (DAO.TabCircleBuf.get(i).getUsername() == DAO.Whologin.get(0).getUsername()) {
+                if (DAO.TabCircleBuf.get(i).getUsername().equals(DAO.Whologin.get(0).getUsername())) {
                     if(DAO.TabCircleBuf.get(i).getCirclename().contains("Green")){
-                        drawCircleOnDBtoMap(googleMap,DAO.TabCircleBuf.get(i),BitmapDescriptorFactory.HUE_GREEN,markerList);
+                        drawCircleInstance(googleMap,DAO.TabCircleBuf.get(i),BitmapDescriptorFactory.HUE_GREEN,markerList);
                     }else if(DAO.TabCircleBuf.get(i).getCirclename().contains("Orange")){
-                        drawCircleOnDBtoMap(googleMap,DAO.TabCircleBuf.get(i),BitmapDescriptorFactory.HUE_ORANGE,markerList);
+                        drawCircleInstance(googleMap,DAO.TabCircleBuf.get(i),BitmapDescriptorFactory.HUE_ORANGE,markerList);
                     }else {
-                        drawCircleOnDBtoMap(googleMap,DAO.TabCircleBuf.get(i),BitmapDescriptorFactory.HUE_RED,markerList);
+                        drawCircleInstance(googleMap,DAO.TabCircleBuf.get(i),BitmapDescriptorFactory.HUE_RED,markerList);
                     }
-
-//                    googleMap.addCircle(DAO.TabCircleBuf.get(i).getRond().getcircleOptions());
-//                    MarkerOptions markerOptions = new MarkerOptions().position(Objects.requireNonNull(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter()));
-//                    markerOptions.title(DAO.TabCircleBuf.get(i).getCirclename());
-//                    Marker marker = googleMap.addMarker(markerOptions);
-//                    markerList.add(marker);
                 }
             }
         }
@@ -398,8 +344,8 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         gmap.setOnMapLongClickListener(this);
         gmap.setOnMarkerClickListener(this);
         gmap.setOnCircleClickListener(this);
-        circletomap(gmap);
-        circlebuftomap(gmap);
+        CircleToMap(gmap);
+        CircleBufToMap(gmap);
     }
 
     public void GetMapLocationPossible(){
@@ -542,6 +488,51 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         if (requestCode == 44) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 GPSAsking();
+            }
+        }
+    }
+
+    public void GetAllCircleThatUserConnectedCreated(){
+        DAO.TabCircleForUserConnected.clear();
+        for(int i=0;i<DAO.TabCircle.size();i++){
+            if(DAO.TabCircle.get(i).getUsername().equals(helperDB.GetUserName())){
+                DAO.TabCircleForUserConnected.add(DAO.TabCircle.get(i));
+            }
+        }
+    }
+    
+    public void Logout(){
+        FirebaseUser firebaseuser= FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseuser!=null){
+            if(googleSignInClient!=null){
+                googleSignInClient.signOut().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        FirebaseAuth.getInstance().signOut();
+                        DAO.Whologin.clear();
+                        helperDB.DeleteWhologin();
+                        FirebaseAuth.getInstance().signOut();
+                        Intent start=new Intent(getContext(),MainActivity.class);
+                        start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        start.putExtra("EXIT",true);
+                        startActivity(start);
+                        requireActivity().finish();
+                    }else {
+                        Toast.makeText(MapFragment.this.getContext(), "Authentication Failed"+ Objects.requireNonNull(task.getException()).getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else {
+                FirebaseAuth.getInstance().signOut();
+                DAO.Whologin.clear();
+                Intent start=new Intent(getContext(),MainActivity.class);
+                start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                start.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                start.putExtra("EXIT",true);
+                startActivity(start);
+                requireActivity().finish();
             }
         }
     }

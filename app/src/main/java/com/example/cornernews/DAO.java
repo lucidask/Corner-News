@@ -1,11 +1,13 @@
 package com.example.cornernews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +21,7 @@ import java.util.List;
 
 
 public class DAO  {
+    static ArrayList<Login> Whologin= new ArrayList<>();
 
     static ArrayList<CircleInstance> TabCircle =new ArrayList<>();
     static ArrayList<CircleInstance> TabCircleForUserConnected =new ArrayList<>();
@@ -28,6 +31,7 @@ public class DAO  {
     static boolean sureOutput=false;
 
     static ArrayList<CircleInstance> TabCircleBuf =new ArrayList<>();
+
     static public void addCirlcleBuf(CircleInstance circle){
         TabCircleBuf.add(circle);
     }
@@ -35,11 +39,6 @@ public class DAO  {
     static ArrayList<Login> loginTab= new ArrayList<>();
     static public void addLogin(Login login) {
         loginTab.add(login);
-    }
-
-    static ArrayList<Login> Whologin= new ArrayList<>();
-    static public void addWhoLogin(Login login) {
-        Whologin.add(login);
     }
 
     static ArrayList<ArrayList<Object>> listEventZoneFromDb= new ArrayList<>();
@@ -245,16 +244,6 @@ public class DAO  {
             }
         }
     }
-
-    public static void getallcirclethatuserconnectedcreated(){
-        TabCircleForUserConnected.clear();
-        for(int i=0;i<TabCircle.size();i++){
-            if(TabCircle.get(i).getUsername().equals(Whologin.get(0).getUsername())){
-                TabCircleForUserConnected.add(TabCircle.get(i));
-            }
-        }
-    }
-
 
 //    public static String convertPassMd5(String pass) {
 //        String password = null;

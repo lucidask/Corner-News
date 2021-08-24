@@ -98,6 +98,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
     AppCompatTextView textProgress;
     ProgressBar barProgress;
     LinearLayoutCompat linearProgress,linearTake,linearView,linear_amount;
+    HelperDB helperDB;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
@@ -129,7 +130,12 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
         linearView=view.findViewById(R.id.linear_media_view);
         linear_amount=view.findViewById(R.id.linear_amount);
         back_arrow.setOnClickListener(this);
-        title.setText("\uD83D\uDE42  "+DAO.Whologin.get(0).getUsername().toUpperCase());
+        helperDB=new HelperDB(getContext());
+        try {
+            title.setText("\uD83D\uDE42  " +helperDB.GetUserName().toUpperCase());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         selected_image.setOnClickListener(this);
         selected_video.setOnClickListener(this);
         open_camera.setOnClickListener(this);
@@ -158,8 +164,8 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
                 Intent intenttogetcirclecenter= requireActivity().getIntent();
                 String circlecenter=intenttogetcirclecenter.getStringExtra("CIRCLE_WHO_CALL");
                 for (int i=0;i<DAO.TabCircleBuf.size();i++){
-                    if (DAO.TabCircleBuf.get(i).getUsername().equals(DAO.Whologin.get(0).getUsername()) &&
-                            DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter().toString().equals(circlecenter)) { // if usercircle match to username
+                    if (DAO.TabCircleBuf.get(i).getUsername().equals(helperDB.GetUserName()) &&
+                            Objects.requireNonNull(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter()).toString().equals(circlecenter)) { // if usercircle match to username
                         cir=DAO.TabCircleBuf.get(i);
                         Zone zone = null;
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -179,7 +185,6 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
                     }
                 }
                 DAO.updateListCircleListImageAndListVideo();
-                DAO.getallcirclethatuserconnectedcreated();
                 break;
             case R.id.open_camera:
                 getCameraPermission();

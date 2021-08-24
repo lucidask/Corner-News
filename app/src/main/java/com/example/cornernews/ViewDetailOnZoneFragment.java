@@ -69,6 +69,7 @@ public class ViewDetailOnZoneFragment extends Fragment implements View.OnClickLi
     AppCompatImageButton log_out;
     ProgressBar progressBarDownload;
     LinearLayoutCompat linear_select_media_type,linear_amout_media;
+    HelperDB helperDB;
 
     @SuppressLint({"SetTextI18n", "NewApi"})
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -95,7 +96,12 @@ public class ViewDetailOnZoneFragment extends Fragment implements View.OnClickLi
         download_selected_item.setOnClickListener(this);
         log_out.setVisibility(View.GONE);
         back_arrow.setOnClickListener(this);
-        title.setText("\uD83D\uDE42  "+DAO.Whologin.get(0).getEmail().toUpperCase());
+        helperDB=new HelperDB(getContext());
+        try {
+            title.setText("\uD83D\uDE42  " +helperDB.GetUserName().toUpperCase());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         title_in_view=view.findViewById(R.id.circle_title_in_view_detail);
         button_image_view.setOnClickListener(this);
         button_video_view.setOnClickListener(this);
