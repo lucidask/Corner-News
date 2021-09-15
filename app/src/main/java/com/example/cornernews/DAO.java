@@ -1,11 +1,20 @@
 package com.example.cornernews;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,10 +38,11 @@ public class DAO  {
     static String DateTimeZone;
     static CircleInstance circleInstanceOut;
     static boolean sureOutput=false;
+    static int SizeTabCircleBefore;
 
     static ArrayList<CircleInstance> TabCircleBuf =new ArrayList<>();
 
-    static public void addCirlcleBuf(CircleInstance circle){
+    static public void addCircleBuf(CircleInstance circle){
         TabCircleBuf.add(circle);
     }
 
@@ -59,6 +69,8 @@ public class DAO  {
 
     static public void updateDaoZoneFromDatabase(){
         mDatabase.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("Recycle")
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                 listEventZoneFromDb.clear();
@@ -66,10 +78,23 @@ public class DAO  {
                     Zone zone = zoneContainer.getValue(Zone.class);
                     assert zone != null;
                     listEventZoneFromDb.add(zone.getEventDetailFromThisZone());
-//                    System.out.println("*********************************** Date Zone "+ zone.toString());
                 }
-                updateTabCircleFromDb();
+
+                SizeTabCircleBefore=TabCircle.size();
+                if(TabCircle.size()>0) {
+                    TabCircle.clear();
+                }
+                for (ArrayList<Object> zone : listEventZoneFromDb) { //add all circleinstanse from GroupallTabDb
+                    TabCircle.add((CircleInstance)zone.get(1));
+                }
+                if(TabCircle.size()>SizeTabCircleBefore){
+                    System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Mwen pi gran la  ");
+                }
+                System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " +SizeTabCircleBefore+ " " +TabCircle.size());
+//                MyWorkerLauncher();
             }
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -77,6 +102,7 @@ public class DAO  {
             }
         });
     }
+
 
     static public void updateDaoMediaFromDatabase(){
         imageMediaDatabase.addValueEventListener(new ValueEventListener() {
@@ -218,7 +244,6 @@ public class DAO  {
         for (ArrayList<Object> zone : listEventZoneFromDb) { //add all circleinstanse from GroupallTabDb
             TabCircle.add((CircleInstance)zone.get(1));
         }
-
     }
 
     static public void updateTabloginFromDb (){
@@ -243,6 +268,11 @@ public class DAO  {
                 }
             }
         }
+    }
+
+    public static void MyWorkerLauncher(){
+        WorkRequest WorkCheckUpdate = new OneTimeWorkRequest.Builder(WorkerToEventDataChange.class).build();
+        WorkManager.getInstance().enqueue(WorkCheckUpdate);
     }
 
 //    public static String convertPassMd5(String pass) {

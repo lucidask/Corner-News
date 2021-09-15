@@ -213,11 +213,11 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
                 gmap.clear();
                 LatLng latLng=new LatLng(circleInstance.getRond().getRondLat(),circleInstance.getRond().getRondLng());
                 if(circleInstance.getCirclename().contains("Green")){
-                    DAO.addCirlcleBuf(redrawSizeCircle(gmap,latLng,circleInstance.getRond().getRondFillColor(),circleInstance.getCirclename(),Double.parseDouble(String.valueOf(progress)),BitmapDescriptorFactory.HUE_GREEN));
+                    DAO.addCircleBuf(redrawSizeCircle(gmap,latLng,circleInstance.getRond().getRondFillColor(),circleInstance.getCirclename(),Double.parseDouble(String.valueOf(progress)),BitmapDescriptorFactory.HUE_GREEN));
                 }else if(circleInstance.getCirclename().contains("Orange")){
-                    DAO.addCirlcleBuf(redrawSizeCircle(gmap,latLng,circleInstance.getRond().getRondFillColor(),circleInstance.getCirclename(),Double.parseDouble(String.valueOf(progress)),BitmapDescriptorFactory.HUE_ORANGE));
+                    DAO.addCircleBuf(redrawSizeCircle(gmap,latLng,circleInstance.getRond().getRondFillColor(),circleInstance.getCirclename(),Double.parseDouble(String.valueOf(progress)),BitmapDescriptorFactory.HUE_ORANGE));
                 }else {
-                    DAO.addCirlcleBuf(redrawSizeCircle(gmap,latLng,circleInstance.getRond().getRondFillColor(),circleInstance.getCirclename(),Double.parseDouble(String.valueOf(progress)),BitmapDescriptorFactory.HUE_RED));
+                    DAO.addCircleBuf(redrawSizeCircle(gmap,latLng,circleInstance.getRond().getRondFillColor(),circleInstance.getCirclename(),Double.parseDouble(String.valueOf(progress)),BitmapDescriptorFactory.HUE_RED));
                 }
                 circleInstance=DAO.TabCircleBuf.get(DAO.TabCircleBuf.size()-1);
             }
@@ -252,7 +252,7 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
                         }
                         gmap.clear();
                         LatLng latLng=new LatLng(circleInstance.getRond().getRondLat(),circleInstance.getRond().getRondLng());
-                        DAO.addCirlcleBuf(redrawColorCircle(gmap,latLng,Color.rgb(34, 139, 34),"_Circle_Green_",circleInstance.getRond().getRondRadius(),BitmapDescriptorFactory.HUE_GREEN));
+                        DAO.addCircleBuf(redrawColorCircle(gmap,latLng,Color.rgb(34, 139, 34),"_Circle_Green_",circleInstance.getRond().getRondRadius(),BitmapDescriptorFactory.HUE_GREEN));
                         circleInstance=DAO.TabCircleBuf.get(DAO.TabCircleBuf.size()-1);
                     }
                 }catch (Exception e) {
@@ -271,7 +271,7 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
                         }
                         gmap.clear();
                         LatLng latLng=new LatLng(circleInstance.getRond().getRondLat(),circleInstance.getRond().getRondLng());
-                        DAO.addCirlcleBuf(redrawColorCircle(gmap,latLng,Color.rgb(255, 140, 0),"_Circle_Orange_",circleInstance.getRond().getRondRadius(),BitmapDescriptorFactory.HUE_ORANGE));
+                        DAO.addCircleBuf(redrawColorCircle(gmap,latLng,Color.rgb(255, 140, 0),"_Circle_Orange_",circleInstance.getRond().getRondRadius(),BitmapDescriptorFactory.HUE_ORANGE));
                         circleInstance=DAO.TabCircleBuf.get(DAO.TabCircleBuf.size()-1);
                     }
                 }catch (Exception e) {
@@ -290,7 +290,7 @@ public class ListCircleForEditFragment extends Fragment implements GoogleMap.OnM
                         }
                         gmap.clear();
                         LatLng latLng=new LatLng(circleInstance.getRond().getRondLat(),circleInstance.getRond().getRondLng());
-                        DAO.addCirlcleBuf(redrawColorCircle(gmap,latLng,Color.RED,"_Circle_Red_",circleInstance.getRond().getRondRadius(),BitmapDescriptorFactory.HUE_RED));
+                        DAO.addCircleBuf(redrawColorCircle(gmap,latLng,Color.RED,"_Circle_Red_",circleInstance.getRond().getRondRadius(),BitmapDescriptorFactory.HUE_RED));
                         circleInstance=DAO.TabCircleBuf.get(DAO.TabCircleBuf.size()-1);
                     }
                 }catch (Exception e) {

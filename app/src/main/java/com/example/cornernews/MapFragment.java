@@ -18,6 +18,10 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -72,7 +76,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
     AppCompatTextView title;
     static GoogleMap gmap;
     RadioGroup radioGroup;
-    int selectedradiobutton;
+    int SelectedrRadioButton;
     AppCompatImageButton btClear, btDelete, log_out, bt_edit, bt_refresh;
     AppCompatTextView back_arrow;
     static List<Marker> markerList = new ArrayList<>();
@@ -124,7 +128,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
          e.printStackTrace();
         }
         DAO.Whologin.add(new Login(Objects.requireNonNull(DAO.UserAuth.getCurrentUser()).getEmail(),helperDB.GetUserName()));
-        checklocationpermission();
+        CheckLocationPermission();
         DAO.updateDaoZoneFromDatabase();
         DAO.updateDaoMediaFromDatabase();
         DAO.updateListCircleListImageAndListVideo();
@@ -143,14 +147,13 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         } else {
             btDelete.setVisibility(View.GONE);
         }
-
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        checklocationpermission();
+        CheckLocationPermission();
         DAO.updateDaoZoneFromDatabase();
         DAO.updateDaoMediaFromDatabase();
         DAO.updateListCircleListImageAndListVideo();
@@ -256,7 +259,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
                         .fillColor(color)
                         .clickable(true)
         );
-        DAO.addCirlcleBuf(new CircleInstance(helperDB.GetUserName(), markerOptions.getTitle(), new Rond(circ)));
+        DAO.addCircleBuf(new CircleInstance(helperDB.GetUserName(), markerOptions.getTitle(), new Rond(circ)));
         btClear.setVisibility(View.VISIBLE);
         bt_edit.setVisibility(View.VISIBLE);
     }
@@ -362,27 +365,16 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         @SuppressLint("MissingPermission") Task<Location> task =client.getLastLocation();
         task.addOnSuccessListener(location -> {
             if(location !=null){
-//                mapFragment.getMapAsync(new OnMapReadyCallback() {
-//                    @Override
-//                    public void onMapReady(@NotNull GoogleMap googleMap1) {
-//                        gmap= googleMap1;
-//                        gmap.clear();
-//                        gmap.setOnCircleClickListener(MapFragment.this);
                         LatLng latLng= new LatLng(location.getLatitude(),location.getLongitude());
-//                        MarkerOptions marker= new MarkerOptions().position(latLng)
-//                                .title("You are here");
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,8 ));
-//                        googleMap.addMarker(marker);
-//                    }
-//                });
             }
         });
     }
 
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
-        selectedradiobutton = radioGroup.getCheckedRadioButtonId();
-        switch (selectedradiobutton) {
+        SelectedrRadioButton = radioGroup.getCheckedRadioButtonId();
+        switch (SelectedrRadioButton) {
             case R.id.radio_green:
                 drawCircle(gmap, latLng, Color.rgb(34, 139, 34), "_Circle_Green_", 10,BitmapDescriptorFactory.HUE_GREEN);
                 break;
@@ -473,7 +465,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         }
     }
 
-    public void checklocationpermission() {
+    public void CheckLocationPermission() {
         if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
@@ -535,6 +527,24 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
                 requireActivity().finish();
             }
         }
+    }
+//    public void MyWorkerLauncher(CircleInstance instance){
+//        LatLng latLng=new LatLng(instance.getRond().getRondLat(),instance.getRond().getRondLng());
+//        WorkRequest WorkCheckUpdate = new OneTimeWorkRequest.Builder(WorkerToEventDataChange.class)
+//                .setInputData(
+//                        new Data.Builder()
+//                                .putString("CircleInstanceName", instance.getCirclename())
+//                                .putString("CircleInstanceCenter", latLng.toString())
+//                                .build()
+//                )
+//                .build();
+//
+//        WorkManager.getInstance().enqueue(WorkCheckUpdate);
+//    }
+
+    public void MyWorkerLauncher(){
+        WorkRequest WorkCheckUpdate = new OneTimeWorkRequest.Builder(WorkerToEventDataChange.class).build();
+        WorkManager.getInstance().enqueue(WorkCheckUpdate);
     }
 
     public PopupWindow showPopup(){

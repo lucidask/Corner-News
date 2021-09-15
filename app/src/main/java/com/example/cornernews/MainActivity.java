@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ProgressBar progressBar;
     SignInButton bt_google_sign_in;
     GoogleSignInClient googleSignInClient;
-    HelperDB helperDB;
+    static HelperDB helperDB;
     Boolean GetIfAlreadyConnect=false;
 
     @Override

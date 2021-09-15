@@ -48,25 +48,14 @@ import android.widget.ViewSwitcher;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
-
 import static android.app.Activity.RESULT_OK;
-
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.iceteck.silicompressorr.SiliCompressor;
+
 
 public class AddDetailForZoneFragment extends Fragment implements View.OnClickListener {
     private static final int REQUEST_CAPTURE = 1;
@@ -146,6 +135,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
         getCameraPermission();
         SetFactoryForImageSwitcher(switcher);
         DAO.updateListCircleListImageAndListVideo();
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
         return view;
     }
 
@@ -161,11 +151,11 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_details_zone:
-                Intent intenttogetcirclecenter= requireActivity().getIntent();
-                String circlecenter=intenttogetcirclecenter.getStringExtra("CIRCLE_WHO_CALL");
+                Intent IntentToGetCircleCenter= requireActivity().getIntent();
+                String CircleCenter=IntentToGetCircleCenter.getStringExtra("CIRCLE_WHO_CALL");
                 for (int i=0;i<DAO.TabCircleBuf.size();i++){
                     if (DAO.TabCircleBuf.get(i).getUsername().equals(helperDB.GetUserName()) &&
-                            Objects.requireNonNull(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter()).toString().equals(circlecenter)) { // if usercircle match to username
+                            Objects.requireNonNull(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter()).toString().equals(CircleCenter)) { // if usercircle match to username
                         cir=DAO.TabCircleBuf.get(i);
                         Zone zone = null;
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

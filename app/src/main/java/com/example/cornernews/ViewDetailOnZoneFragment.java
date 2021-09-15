@@ -245,7 +245,6 @@ public class ViewDetailOnZoneFragment extends Fragment implements View.OnClickLi
                     mp.start();
                 });
                 currentIndexVideo=0;
-                currentIndexVideo = 0;
                 whosmedia = 'v';
                 }
             else{

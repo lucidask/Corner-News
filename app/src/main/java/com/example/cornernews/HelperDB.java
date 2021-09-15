@@ -6,9 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class HelperDB extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "WhoLogin.db";
+    public static final String DATABASE_NAME = "CornerNews.db";
     public static final String WHO_LOGIN_TABLE = "WhoLogin";
+//    public static final String CIRCLE_INSTANCE_TABLE = "CircleInstance";
 
     public HelperDB(Context context) {
         super(context, DATABASE_NAME,null, 1);
@@ -19,6 +22,9 @@ public class HelperDB extends SQLiteOpenHelper {
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS "+WHO_LOGIN_TABLE+
                         "(_id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, username TEXT NOT NULL UNIQUE)");
+//        db.execSQL(
+//                "CREATE TABLE IF NOT EXISTS "+CIRCLE_INSTANCE_TABLE+
+//                        "(_id INTEGER PRIMARY KEY AUTOINCREMENT, circle_name TEXT NOT NULL , circle_center TEXT NOT NULL )");
     }
 
     @Override
@@ -35,6 +41,16 @@ public class HelperDB extends SQLiteOpenHelper {
         return insertId;
     }
 
+//    public long insertCircleInstance (CircleInstance circleInstance) {
+//        LatLng latLng=new LatLng(circleInstance.getRond().getRondLat(),circleInstance.getRond().getRondLng());
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("circle_name", circleInstance.getCirclename());
+//        contentValues.put("circle_center", latLng.toString());
+//        long insertId =db.insert(CIRCLE_INSTANCE_TABLE, null, contentValues);
+//        return insertId;
+//    }
+
     public String GetUserName() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor getting =  db.rawQuery( "Select * from "+WHO_LOGIN_TABLE, null );
@@ -43,16 +59,21 @@ public class HelperDB extends SQLiteOpenHelper {
         return username;
     }
 
-    public String GetEmail() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor getting =  db.rawQuery( "Select * from "+WHO_LOGIN_TABLE, null );
-        getting.moveToFirst();
-        String email=getting.getString(getting.getColumnIndex("email"));
-        return email;
-    }
+//    public String GetEmail() {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor getting =  db.rawQuery( "Select * from "+WHO_LOGIN_TABLE, null );
+//        getting.moveToFirst();
+//        String email=getting.getString(getting.getColumnIndex("email"));
+//        return email;
+//    }
 
     public void DeleteWhologin(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from "+ WHO_LOGIN_TABLE);
     }
+
+//    public void DeleteAllCircle(){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.execSQL("delete from "+ CIRCLE_INSTANCE_TABLE);
+//    }
 }

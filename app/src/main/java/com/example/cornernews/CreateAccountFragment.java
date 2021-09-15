@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CreateAccountFragment extends Fragment implements View.OnClickListener {
     private AppCompatEditText input_email;
@@ -181,7 +182,7 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
                             input_email.requestFocus();
                         }
                         else {
-                            saveloginToDatabase(new Login(input_email.getText().toString().trim(), create_username.getText().toString().trim()), create_password.getText().toString().trim());
+                            SaveLoginToDatabase(new Login(input_email.getText().toString().trim(), create_username.getText().toString().trim()), create_password.getText().toString().trim());
                         }
                     }
 
@@ -214,21 +215,22 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public void saveloginToDatabase(Login log,String password){
+    public void SaveLoginToDatabase(Login log,String password){
         progressBar.setVisibility(View.VISIBLE);
         DAO.UserAuth.createUserWithEmailAndPassword(log.getEmail(),password).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
 //                    logDatabase.child(log.getUsername()).setValue(log);
-                DAO.logDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(log).addOnCompleteListener(task1 -> {
+                DAO.logDatabase.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(log).addOnCompleteListener(task1 -> {
                     if(task1.isSuccessful()){
                         FirebaseUser user=DAO.UserAuth.getCurrentUser();
+                        assert user != null;
                         if(!user.isEmailVerified()){
                             user.sendEmailVerification();
                             progressBar.setVisibility(View.INVISIBLE);
-                            input_email.getText().clear();
-                            create_username.getText().clear();
-                            create_password.getText().clear();
-                            confirm_password.getText().clear();
+                            Objects.requireNonNull(input_email.getText()).clear();
+                            Objects.requireNonNull(create_username.getText()).clear();
+                            Objects.requireNonNull(create_password.getText()).clear();
+                            Objects.requireNonNull(confirm_password.getText()).clear();
                             Toast.makeText(this.getContext(), "Account created successfully! Check your mail to verify your account before log in  ",
                                     Toast.LENGTH_SHORT).show();
                         }
