@@ -107,7 +107,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         bt_edit = view.findViewById(R.id.bt_edit);
         btDelete = view.findViewById(R.id.bt_delete);
         bt_refresh = view.findViewById(R.id.bt_refresh);
-        btList=view.findViewById(R.id.bt_list_zone);
+        btList=view.findViewById(R.id.bt_list_AlertInstance);
         help=view.findViewById(R.id.help_button_for_MapFragment);
         relativeLayoutPopup=view.findViewById(R.id.pathRelativeOnMapFragment);
         close_help=view.findViewById(R.id.close_help_button_for_MapFragment);
@@ -131,7 +131,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         }
         DAO.Whologin.add(new Login(Objects.requireNonNull(DAO.UserAuth.getCurrentUser()).getEmail(),helperDB.GetUserName()));
         CheckLocationPermission();
-        DAO.updateDaoZoneFromDatabase();
+        DAO.updateDaoAlertInstanceFromDatabase();
         DAO.updateDaoMediaFromDatabase();
         DAO.updateListCircleListImageAndListVideo();
         GetAllCircleThatUserConnectedCreated();
@@ -161,7 +161,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
     public void onResume() {
         super.onResume();
         CheckLocationPermission();
-        DAO.updateDaoZoneFromDatabase();
+        DAO.updateDaoAlertInstanceFromDatabase();
         DAO.updateDaoMediaFromDatabase();
         DAO.updateListCircleListImageAndListVideo();
         radioGroup.clearCheck();
@@ -199,10 +199,10 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         switch (v.getId()) {
             case R.id.bt_delete:
             case R.id.bt_edit:
-            case R.id.bt_list_zone:
-                Intent GoToDeleteOrEditOrViewListZone = new Intent(this.getContext(), ContainerFrag.class);
-                GoToDeleteOrEditOrViewListZone.putExtra(WHO_CALL, v.getId());
-                startActivity(GoToDeleteOrEditOrViewListZone);
+            case R.id.bt_list_AlertInstance:
+                Intent GoToDeleteOrEditOrViewListAlertInstance = new Intent(this.getContext(), ContainerFrag.class);
+                GoToDeleteOrEditOrViewListAlertInstance.putExtra(WHO_CALL, v.getId());
+                startActivity(GoToDeleteOrEditOrViewListAlertInstance);
                 break;
             case R.id.bt_clear:
                 if(DAO.TabCircleBuf.size()>0){

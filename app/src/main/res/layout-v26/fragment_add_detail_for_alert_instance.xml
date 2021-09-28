@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AddDetailForZoneFragment"
+    tools:context=".AddDetailForAlertInstanceFragment"
     android:orientation="vertical"
     android:background="@color/purple_200">
 
@@ -27,8 +27,8 @@
             android:id="@+id/circle_title_in_add_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/zone_feedback"
-            android:textSize="20dp"
+            android:text="@string/AlertInstance_feedback"
+            android:textSize="20sp"
             android:padding="5dp"
             android:textColor="@color/white"
             app:layout_constraintVertical_bias="0.0"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:textColor="@color/black"
-                android:text="Date"
+                android:text="@string/date"
                 android:layout_gravity="center"/>
 
             <DigitalClock
@@ -119,9 +119,9 @@
                 android:id="@+id/selected_video_view"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="120dp"
                 android:background="@drawable/ic_baseline_video_album"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:layout_marginStart="120dp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -253,7 +253,7 @@
                 android:id="@+id/edit_text_description"
                 android:layout_width="300dp"
                 android:layout_height="70dp"
-                android:hint="@string/zone_description"
+                android:hint="@string/AlertInstance_description"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_round"
@@ -261,7 +261,7 @@
                 android:layout_margin="5dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/add_details_zone"
+                android:id="@+id/add_details_AlertInstance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save"

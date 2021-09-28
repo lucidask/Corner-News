@@ -117,7 +117,7 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
         for (int i = 0; i < DAO.TabCircleForUserConnected.size(); i++) {
             if (circle.getCenter().latitude == DAO.TabCircleForUserConnected.get(i).getRond().getRondLat() &&
                     circle.getCenter().longitude == DAO.TabCircleForUserConnected.get(i).getRond().getRondLng()) {
-                deleteZone(DAO.TabCircleForUserConnected.get(i).getCirclename());
+                deleteAlertInstance(DAO.TabCircleForUserConnected.get(i).getCirclename());
                 DAO.TabCircleForUserConnected.remove(i);
                 gmap.clear();
                 getCircletoMapforDelete(gmap);
@@ -180,15 +180,15 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
         return false;
     }
 
-    public static void deleteZone(String zonename){
-        DAO.mDatabase.child(zonename).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+    public static void deleteAlertInstance(String AlertInstancename){
+        DAO.AlertDatabase.child(AlertInstancename).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-               DAO.imageMediaDatabase.child(zonename).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+               DAO.imageMediaDatabase.child(AlertInstancename).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-//                            deleteMediaViaCircleName(zonename);
+//                            deleteMediaViaCircleName(AlertInstancename);
                         }
                     }
                 });

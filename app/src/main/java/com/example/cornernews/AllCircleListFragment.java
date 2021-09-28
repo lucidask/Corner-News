@@ -36,20 +36,25 @@ public class AllCircleListFragment extends Fragment implements AdapterView.OnIte
         log_out.setVisibility(View.GONE);
         back_arrow.setOnClickListener(this);
 //        TitleToGetInVisible();
-        ToSortZones("Red", redList);
-        ToSortZones("Green", greenList);
-        ToSortZones("Orange", orangeList);
+        ToSortAlertInstances("Red", redList);
+        ToSortAlertInstances("Green", greenList);
+        ToSortAlertInstances("Orange", orangeList);
         return view;
     }
 
-    public void ToSortZones(String colorName, ListView listView){
-        ArrayList<ArrayList<String>> ZoneInfo=new ArrayList<>();
+    public void ToSortAlertInstances(String colorName, ListView listView){
+//        gran tab ki pral afiche a
+        ArrayList<ArrayList<String>> AlertInstanceInfo=new ArrayList<>();
+//        tab kap gen AlertInstance menm koule yo
         ArrayList<CircleInstance> arrayList=new ArrayList<>();
+//        tab ki pral kenbe lyen imaj ak videyo yo
         ArrayList<Uri> imageUris;
         ArrayList<Uri> videoUris;
-        String ZoneName="";
-        String DateZone="";
-        String TimeZone="";
+//        varyab ki pral kenbe enfomasyon AlertInstance nan
+        String AlertInstanceName="";
+        String DateAlertInstance="";
+        String TimeAlertInstance="";
+
         if(DAO.TabCircle.size()>0){
             for(int i=0;i<DAO.TabCircle.size();i++){
                 if(DAO.TabCircle.get(i).getCirclename().contains(colorName)){
@@ -60,16 +65,16 @@ public class AllCircleListFragment extends Fragment implements AdapterView.OnIte
         if(arrayList.size()>0){
             for(int i=0;i<arrayList.size();i++){
                 ArrayList<String> stringArrayList=new ArrayList<>();
-                for(int j=0; j<DAO.listEventZoneFromDb.size();j++){
-                    CircleInstance circleInstanceBuf = (CircleInstance) DAO.listEventZoneFromDb.get(j).get(1);
+                for(int j=0; j<DAO.listEventAlertInstanceFromDb.size();j++){
+                    CircleInstance circleInstanceBuf = (CircleInstance) DAO.listEventAlertInstanceFromDb.get(j).get(1);
                     if(arrayList.get(i).getCirclename().equals(circleInstanceBuf.getCirclename())) {
-                        ZoneName=arrayList.get(i).getCirclename();
-                        DateZone=(String) DAO.listEventZoneFromDb.get(j).get(2);
-                        TimeZone=(String) DAO.listEventZoneFromDb.get(j).get(3);
-                        stringArrayList.add(ZoneName);
-                        stringArrayList.add(DateZone);
-                        stringArrayList.add(TimeZone);
-                        ZoneInfo.add(stringArrayList);
+                        AlertInstanceName=arrayList.get(i).getCirclename();
+                        DateAlertInstance=(String) DAO.listEventAlertInstanceFromDb.get(j).get(2);
+                        TimeAlertInstance=(String) DAO.listEventAlertInstanceFromDb.get(j).get(3);
+                        stringArrayList.add(AlertInstanceName);
+                        stringArrayList.add(DateAlertInstance);
+                        stringArrayList.add(TimeAlertInstance);
+                        AlertInstanceInfo.add(stringArrayList);
                     }
                 }
                 if(DAO.tableDesTrioCircleImageLinkListVideoLinkList.size()>0){
@@ -78,7 +83,7 @@ public class AllCircleListFragment extends Fragment implements AdapterView.OnIte
                         if(arrayList.get(i).getCirclename().equals(nameCircleToGetMedia)){
                             imageUris=(ArrayList<Uri>) DAO.tableDesTrioCircleImageLinkListVideoLinkList.get(m).get(1);
                             videoUris=(ArrayList<Uri>) DAO.tableDesTrioCircleImageLinkListVideoLinkList.get(m).get(2);
-                            System.out.println("**************************************************************** "+nameCircleToGetMedia+" "+imageUris.size()+" "+ videoUris.size());
+//                            System.out.println("**************************************************************** "+nameCircleToGetMedia+" "+imageUris.size()+" "+ videoUris.size());
                             stringArrayList.add(String.valueOf(imageUris.size()));
                             stringArrayList.add(String.valueOf(videoUris.size()));
                         }
@@ -86,7 +91,7 @@ public class AllCircleListFragment extends Fragment implements AdapterView.OnIte
                 }
             }
         }
-        ArrayAdapter adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, ZoneInfo);
+        ArrayAdapter adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, AlertInstanceInfo);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }

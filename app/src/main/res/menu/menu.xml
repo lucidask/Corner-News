@@ -4,9 +4,9 @@
 <!--        android:title="@string/modify">-->
 <!--        <menu>-->
 <!--            <item android:id="@+id/item_color"-->
-<!--                android:title="@string/zone_color" />-->
+<!--                android:title="@string/AlertInstance_color" />-->
 <!--            <item android:id="@+id/item_size"-->
-<!--                android:title="@string/zone_size" />-->
+<!--                android:title="@string/AlertInstance_size" />-->
 <!--        </menu>-->
 <!--    </item>-->
 

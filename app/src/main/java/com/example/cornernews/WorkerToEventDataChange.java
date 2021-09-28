@@ -16,7 +16,7 @@ public class WorkerToEventDataChange extends Worker {
     @Override
     public Result doWork() {
 //        int SizeTabCircle=DAO.TabCircle.size();
-        DAO.updateDaoZoneFromDatabase();
+        DAO.updateDaoAlertInstanceFromDatabase();
 //        if(DAO.TabCircle.size()>SizeTabCircle){
 //////            String LastCircleName = getInputData().getString("CircleInstanceName");
 //////            String LastCircleCenter = getInputData().getString("CircleInstanceCenter");

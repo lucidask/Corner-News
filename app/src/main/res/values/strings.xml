@@ -3,7 +3,7 @@
     <string name="save">Save</string>
     <string name="search">Search...</string>
     <string name="map_key" translatable="false">AIzaSyBR442ETc1ih8UI_amGf-FPE7FE7eC8yn4</string>
-    <string name="zone_description">Zone Description...</string>
+    <string name="AlertInstance_description">AlertInstance Description...</string>
     <string name="view_selected_image">View Selected Images</string>
     <string name="view_selected_video">View Selected Videos</string>
     <string name="sign_in">Sign in</string>
@@ -25,7 +25,7 @@
     <string name="title">Title</string>
     <string name="log_out">Log out</string>
     <string name="corner_news">Corner News</string>
-    <string name="zone_feedback">Zone Feedback</string>
+    <string name="AlertInstance_feedback">AlertInstance Feedback</string>
     <string name="view_image">View images</string>
     <string name="view_video">View videos</string>
     <string name="clickDelete">Click on any circled areas</string>
@@ -35,8 +35,8 @@
     <string name="modify">Modify</string>
     <string name="delete">Delete</string>
     <string name="about">About</string>
-    <string name="zone_color">Zone Color</string>
-    <string name="zone_size">Zone Size</string>
+    <string name="AlertInstance_color">AlertInstance Color</string>
+    <string name="AlertInstance_size">AlertInstance Size</string>
     <string name="empty_video">Empty Video</string>
     <string name="empty_image">Empty Image</string>
     <string name="to_refresh">: To refresh GoogleMaps content</string>
@@ -50,7 +50,7 @@
     <string name="enter_your_email_address">Enter your email address</string>
     <string name="reset_password">Reset Password</string>
     <string name="time">Time</string>
+    <string name="red_AlertInstance">Red AlertInstance</string>
+    <string name="orange_AlertInstance">Orange AlertInstance</string>
     <string name="date">Date</string>
-    <string name="red_zone">Red Zone</string>
-    <string name="orange_zone">Orange Zone</string>
 </resources>

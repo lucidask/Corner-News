@@ -46,7 +46,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
-public class ViewDetailOnZoneFragment extends Fragment implements View.OnClickListener {
+public class ViewDetailOnAlertInstanceFragment extends Fragment implements View.OnClickListener {
     RelativeLayout relativeLayout;
     SwipeListener swipeListener;
     ImageSwitcher switcher;
@@ -76,7 +76,7 @@ public class ViewDetailOnZoneFragment extends Fragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_view_detail_on_zone, container, false);
+        View view=inflater.inflate(R.layout.fragment_view_detail_on_alert_instance, container, false);
         relativeLayout=view.findViewById(R.id.layout_swipe_view);
         swipeListener = new SwipeListener(relativeLayout);
         switcher=view.findViewById(R.id.image_switcher_for_view);
@@ -114,10 +114,10 @@ public class ViewDetailOnZoneFragment extends Fragment implements View.OnClickLi
         DAO.addCircleToOutput(circleInstancetoviewname);
         if(DAO.sureOutput){
             descrition_view.setText(DAO.descriptionOut);
-            alert_start_date.setText(DAO.DateZone);
-            alert_start_time.setText(DAO.TimeZone);
+            alert_start_date.setText(DAO.DateAlertInstance);
+            alert_start_time.setText(DAO.TimeAlertInstance);
 //            System.out.println("*********************************** Description "+ DAO.descriptionOut);
-//            System.out.println("*********************************** Date Zone "+ DAO.DateTimeZone);
+//            System.out.println("*********************************** Date AlertInstance "+ DAO.DateTimeAlertInstance);
             resultmedia();
             DAO.sureOutput=false;
         }

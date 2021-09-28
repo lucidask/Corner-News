@@ -35,8 +35,8 @@ public class DAO  {
     static ArrayList<CircleInstance> TabCircle =new ArrayList<>();
     static ArrayList<CircleInstance> TabCircleForUserConnected =new ArrayList<>();
     static String descriptionOut;
-    static String TimeZone;
-    static String DateZone;
+    static String TimeAlertInstance;
+    static String DateAlertInstance;
     static CircleInstance circleInstanceOut;
     static boolean sureOutput=false;
     static int SizeTabCircleBefore;
@@ -52,13 +52,13 @@ public class DAO  {
         loginTab.add(login);
     }
 
-    static ArrayList<ArrayList<Object>> listEventZoneFromDb= new ArrayList<>();
-    static ArrayList<ArrayList<Object>> loginEventZoneFromDb= new ArrayList<>();
+    static ArrayList<ArrayList<Object>> listEventAlertInstanceFromDb= new ArrayList<>();
+    static ArrayList<ArrayList<Object>> loginEventAlertInstanceFromDb= new ArrayList<>();
     static ArrayList<ArrayList<Object>> tableDesTrioCircleImageLinkListVideoLinkList=new ArrayList<>();//circle name -----> listimage, listvideo
     static ArrayList<Object> allImageLinkFromDb= new ArrayList<>();
     static ArrayList<Object> allVideoLinkFromDb= new ArrayList<>();
 
-    static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("zone");
+    static DatabaseReference AlertDatabase = FirebaseDatabase.getInstance().getReference("AlertInstance");
     static DatabaseReference logDatabase = FirebaseDatabase.getInstance().getReference("login");
     static DatabaseReference mediaDatabase = FirebaseDatabase.getInstance().getReference("media");
     static DatabaseReference imageMediaDatabase = FirebaseDatabase.getInstance().getReference("media").child("imageBranch");
@@ -68,25 +68,25 @@ public class DAO  {
     final static FirebaseAuth UserAuth = FirebaseAuth.getInstance();
 
 
-    static public void updateDaoZoneFromDatabase(){
-        mDatabase.addValueEventListener(new ValueEventListener() {
+    static public void updateDaoAlertInstanceFromDatabase(){
+        AlertDatabase.addValueEventListener(new ValueEventListener() {
             @SuppressLint("Recycle")
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                listEventZoneFromDb.clear();
-                for (DataSnapshot zoneContainer : dataSnapshot.getChildren()) {
-                    Zone zone = zoneContainer.getValue(Zone.class);
-                    assert zone != null;
-                    listEventZoneFromDb.add(zone.getEventDetailFromThisZone());
+                listEventAlertInstanceFromDb.clear();
+                for (DataSnapshot AlertInstanceContainer : dataSnapshot.getChildren()) {
+                    AlertInstance AlertInstance = AlertInstanceContainer.getValue(AlertInstance.class);
+                    assert AlertInstance != null;
+                    listEventAlertInstanceFromDb.add(AlertInstance.getEventDetailFromThisAlertInstance());
                 }
 
                 SizeTabCircleBefore=TabCircle.size();
                 if(TabCircle.size()>0) {
                     TabCircle.clear();
                 }
-                for (ArrayList<Object> zone : listEventZoneFromDb) { //add all circleinstanse from GroupallTabDb
-                    TabCircle.add((CircleInstance)zone.get(1));
+                for (ArrayList<Object> AlertInstance : listEventAlertInstanceFromDb) { //add all circleinstanse from GroupallTabDb
+                    TabCircle.add((CircleInstance)AlertInstance.get(1));
                 }
             }
 
@@ -217,11 +217,11 @@ public class DAO  {
         logDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                loginEventZoneFromDb.clear();
+                loginEventAlertInstanceFromDb.clear();
                 for (DataSnapshot loginContainer : dataSnapshot.getChildren()) {
                     Login login=loginContainer.getValue(Login.class);
                     assert login != null;
-                    loginEventZoneFromDb.add(login.getEventDetailFromThisLogin());
+                    loginEventAlertInstanceFromDb.add(login.getEventDetailFromThisLogin());
                 }
                 updateTabloginFromDb ();
             }
@@ -237,8 +237,8 @@ public class DAO  {
 //        if(TabCircle.size()>0) {
 //            TabCircle.clear();
 //        }
-//        for (ArrayList<Object> zone : listEventZoneFromDb) { //add all circleinstanse from GroupallTabDb
-//            TabCircle.add((CircleInstance)zone.get(1));
+//        for (ArrayList<Object> AlertInstance : listEventAlertInstanceFromDb) { //add all circleinstanse from GroupallTabDb
+//            TabCircle.add((CircleInstance)AlertInstance.get(1));
 //        }
 //    }
 
@@ -246,21 +246,21 @@ public class DAO  {
         if(loginTab.size()>0) {
             loginTab.clear();
         }
-        for (int i=0;i<loginEventZoneFromDb.size();i++){
-            String em=loginEventZoneFromDb.get(i).get(0).toString();
-            String us=loginEventZoneFromDb.get(i).get(1).toString();
+        for (int i=0;i<loginEventAlertInstanceFromDb.size();i++){
+            String em=loginEventAlertInstanceFromDb.get(i).get(0).toString();
+            String us=loginEventAlertInstanceFromDb.get(i).get(1).toString();
             addLogin(new Login(em,us));
         }
     }
 
     public static void addCircleToOutput(CircleInstance instance){
-        for(int i=0; i<listEventZoneFromDb.size();i++){
+        for(int i=0; i<listEventAlertInstanceFromDb.size();i++){
             if(instance!=null) {
-                circleInstanceOut = (CircleInstance) listEventZoneFromDb.get(i).get(1);
+                circleInstanceOut = (CircleInstance) listEventAlertInstanceFromDb.get(i).get(1);
                 if (instance.getCirclename().equals(circleInstanceOut.getCirclename())) {
-                    descriptionOut = (String) listEventZoneFromDb.get(i).get(0);
-                        DateZone=(String) listEventZoneFromDb.get(i).get(2);
-                        TimeZone=(String) listEventZoneFromDb.get(i).get(3);
+                    descriptionOut = (String) listEventAlertInstanceFromDb.get(i).get(0);
+                        DateAlertInstance=(String) listEventAlertInstanceFromDb.get(i).get(2);
+                        TimeAlertInstance=(String) listEventAlertInstanceFromDb.get(i).get(3);
                     sureOutput = true;
                 }
             }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ViewDetailOnZoneFragment"
+    tools:context=".ViewDetailOnAlertInstanceFragment"
     android:orientation="vertical"
     android:background="@color/purple_200">
 
@@ -27,7 +27,7 @@
             android:id="@+id/circle_title_in_view_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/zone_feedback"
+            android:text="@string/AlertInstance_feedback"
             android:gravity="center"
             android:textSize="20sp"
             android:textColor="@color/white"
@@ -181,7 +181,7 @@
             android:id="@+id/description_view"
             android:layout_width="300dp"
             android:layout_height="70dp"
-            android:hint="@string/zone_description"
+            android:hint="@string/AlertInstance_description"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/bg_round"

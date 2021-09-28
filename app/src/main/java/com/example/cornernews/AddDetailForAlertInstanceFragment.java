@@ -59,7 +59,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.StorageReference;
 
 
-public class AddDetailForZoneFragment extends Fragment implements View.OnClickListener {
+public class AddDetailForAlertInstanceFragment extends Fragment implements View.OnClickListener {
     private static final int REQUEST_CAPTURE = 1;
     private  static  final int PICK_IMAGES_CODE=0;
     private  static  final int PICK_VIDEOS_CODE=2;
@@ -97,7 +97,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_add_detail_for_zone, container, false);
+        View view=inflater.inflate(R.layout.fragment_add_detail_for_alert_instance, container, false);
         relativeLayout=view.findViewById(R.id.layout_swipe);
         swipeListener = new SwipeListener(relativeLayout);
         switcher=view.findViewById(R.id.image_switcher);
@@ -108,7 +108,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
         selected_video=view.findViewById(R.id.selected_video_view);
         editTextDescrption=view.findViewById(R.id.edit_text_description);
         title_in_add=view.findViewById(R.id.circle_title_in_add_detail);
-        add_details=view.findViewById(R.id.add_details_zone);
+        add_details=view.findViewById(R.id.add_details_AlertInstance);
         title=view.findViewById(R.id.title);
         back_arrow=view.findViewById(R.id.back_perso);
         image_amount=view.findViewById(R.id.amount_image_added);
@@ -155,18 +155,18 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.add_details_zone:
+            case R.id.add_details_AlertInstance:
                 Intent IntentToGetCircleCenter= requireActivity().getIntent();
                 String CircleCenter=IntentToGetCircleCenter.getStringExtra("CIRCLE_WHO_CALL");
                 for (int i=0;i<DAO.TabCircleBuf.size();i++){
                     if (DAO.TabCircleBuf.get(i).getUsername().equals(helperDB.GetUserName()) &&
                             Objects.requireNonNull(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter()).toString().equals(CircleCenter)) { // if UserCircleName match to username
                         cir=DAO.TabCircleBuf.get(i);
-                        Zone zone = null;
+                        AlertInstance AlertInstance = null;
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                            zone = new Zone(cir,editTextDescrption.getText().toString(),NowDate().toString(),clock.getText().toString());
+                            AlertInstance = new AlertInstance(cir,editTextDescrption.getText().toString(),NowDate().toString(),clock.getText().toString());
                         }
-                        DAO.mDatabase.child(cir.getCirclename()).setValue(zone).addOnCompleteListener(task -> {
+                        DAO.AlertDatabase.child(cir.getCirclename()).setValue(AlertInstance).addOnCompleteListener(task -> {
                             if(task.isSuccessful()){
                                 Toast.makeText(getContext(),"Successfully added circled area",
                                         Toast.LENGTH_SHORT).show();

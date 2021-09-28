@@ -71,7 +71,7 @@ public class ContainerFrag extends AppCompatActivity {
                 }
                 break;
 
-            case R.id.bt_list_zone:
+            case R.id.bt_list_AlertInstance:
                 if(currentFragment==null){
                     AllCircleListFragment fragment= new AllCircleListFragment();
                     getSupportFragmentManager()
@@ -99,7 +99,7 @@ public class ContainerFrag extends AppCompatActivity {
                                 circleInstancebuf=DAO.TabCircle.get(i);
                                 DAO.updateListCircleListImageAndListVideo();
                                 if (currentFragment == null) {
-                                    ViewDetailOnZoneFragment fragment = new ViewDetailOnZoneFragment();
+                                    ViewDetailOnAlertInstanceFragment fragment = new ViewDetailOnAlertInstanceFragment();
                                     getSupportFragmentManager()
                                             .beginTransaction()
                                             .replace(R.id.frame_layout, fragment)
@@ -118,7 +118,7 @@ public class ContainerFrag extends AppCompatActivity {
                                 }
                             }
                             if (currentFragment == null) {
-                                AddDetailForZoneFragment fragment = new AddDetailForZoneFragment();
+                                AddDetailForAlertInstanceFragment fragment = new AddDetailForAlertInstanceFragment();
                                 getSupportFragmentManager()
                                         .beginTransaction()
                                         .replace(R.id.frame_layout, fragment)

@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         back_arrow.setVisibility(View.GONE);
         title.setText("Corner News");
         AskMultiplePermission();
-        DAO.updateDaoZoneFromDatabase();
+        DAO.updateDaoAlertInstanceFromDatabase();
         DAO.updateDaoLoginFromDatabase();
         DAO.updateDaoMediaFromDatabase();
         DAO.updateListCircleListImageAndListVideo();
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressBar.setVisibility(View.INVISIBLE);
         super.onResume();
         login.setEnabled(true);
-        DAO.updateDaoZoneFromDatabase();
+        DAO.updateDaoAlertInstanceFromDatabase();
         DAO.updateDaoLoginFromDatabase();
         DAO.updateDaoMediaFromDatabase();
         DAO.updateListCircleListImageAndListVideo();
