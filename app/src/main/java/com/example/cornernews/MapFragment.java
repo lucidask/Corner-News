@@ -226,7 +226,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
                 Logout();
                 break;
             case R.id.bt_refresh:
-                refreshingFragment();
+                reloadFragment();
                 break;
 //            case R.id.help_button_for_MapFragment:
 //                popupWindowhelp=showPopup();
@@ -277,6 +277,16 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         btClear.setVisibility(View.VISIBLE);
         bt_edit.setVisibility(View.VISIBLE);
     }
+
+    public static void drawCircleInstance(GoogleMap googleMap,CircleInstance circleInstance,float markerColor,List<Marker> markerList){
+        googleMap.addCircle(circleInstance.getRond().getcircleOptions());
+        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(markerColor))
+                .position(Objects.requireNonNull(circleInstance.getRond().getcircleOptions().getCenter()));
+        markerOptions.title(circleInstance.getAlertName());
+        Marker marker = googleMap.addMarker(markerOptions);
+       markerList.add(marker);
+    }
+
     public void CircleToMap(GoogleMap googleMap) {
         if (DAO.TabCircle.size() > 0) {
             for (int i = 0; i < DAO.TabCircle.size(); i++) {
@@ -291,16 +301,6 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         }
         refresh(1500,googleMap);
     }
-
-    public static void drawCircleInstance(GoogleMap googleMap,CircleInstance circleInstance,float markerColor,List<Marker> markerList){
-        googleMap.addCircle(circleInstance.getRond().getcircleOptions());
-        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(markerColor))
-                .position(Objects.requireNonNull(circleInstance.getRond().getcircleOptions().getCenter()));
-        markerOptions.title(circleInstance.getAlertName());
-        Marker marker = googleMap.addMarker(markerOptions);
-       markerList.add(marker);
-    }
-
 
     public static void CircleBufToMap(GoogleMap googleMap) {
         if (DAO.TabCircleBuf.size() > 0) {
@@ -326,7 +326,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         startActivity(GoToPutMoreInfos);
     }
 
-    private void refreshingFragment(){
+    private void reloadFragment(){
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 requireActivity().getSupportFragmentManager().beginTransaction().detach(MapFragment.this).commitNow();
@@ -339,22 +339,9 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         }
     }
 
-    private void refresh(int millisecond,GoogleMap googleMap) {
-        final Handler handler=new Handler();
-        final  Runnable runnable= new Runnable() {
-            @Override
-            public void run() {
-                CircleToMap(googleMap);
-            }
-        };
-        handler.postDelayed(runnable,millisecond);
-    }
-
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gmap=googleMap;
-//        LatLng Ayiti= new LatLng(19.0558462 ,-73.0513321);
-//        gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(Ayiti,8 ));
         getCurrentLocation(googleMap);
         GetMapLocationPossible();
         gmap.setOnMapClickListener(this);
@@ -568,5 +555,11 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         popupWindow=new PopupWindow(customView, RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.showAtLocation(relativeLayoutPopup, Gravity.TOP,0,0);
         return popupWindow;
+    }
+
+    private void refresh(int millisecond,GoogleMap googleMap) {
+        final Handler handler=new Handler();
+        final  Runnable runnable= () -> CircleToMap(googleMap);
+        handler.postDelayed(runnable,millisecond);
     }
 }

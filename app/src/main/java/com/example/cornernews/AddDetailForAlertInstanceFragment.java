@@ -168,7 +168,7 @@ public class AddDetailForAlertInstanceFragment extends Fragment implements View.
                         }
                         DAO.AlertDatabase.child(cir.getAlertName()).setValue(AlertInstance).addOnCompleteListener(task -> {
                             if(task.isSuccessful()){
-                                Toast.makeText(getContext(),"Successfully added circled area",
+                                Toast.makeText(getContext(),"Successfully added alert",
                                         Toast.LENGTH_SHORT).show();
                                 if(imageUris.size()>0 || videoUris.size()>0){
                                     SaveMedia(imageUris,videoUris);
@@ -235,13 +235,7 @@ public class AddDetailForAlertInstanceFragment extends Fragment implements View.
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public LocalDate NowDate(){
-//        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-//        Date date = new Date(System.currentTimeMillis());
-//        System.out.println(formatter.format(date));
-
         LocalDate date = LocalDate.now();
-//        return formatter.format(date);
-//        System.out.println("*********************************** now "+ date);
         return date;
     }
 

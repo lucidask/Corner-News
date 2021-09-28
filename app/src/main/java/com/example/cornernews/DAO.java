@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -15,6 +16,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -89,8 +91,6 @@ public class DAO  {
                     TabCircle.add((CircleInstance)AlertInstance.get(1));
                 }
             }
-
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -190,6 +190,7 @@ public class DAO  {
             }
         });
     }
+
     public static void updateListCircleListImageAndListVideo (){
         tableDesTrioCircleImageLinkListVideoLinkList.clear();
         for (CircleInstance circleName:TabCircle) {

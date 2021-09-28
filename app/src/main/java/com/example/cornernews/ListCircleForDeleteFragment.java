@@ -188,7 +188,9 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-//                            deleteMediaViaCircleName(AlertInstancename);
+                            DAO.updateDaoAlertInstanceFromDatabase();
+                            DAO.updateDaoMediaFromDatabase();
+                            DAO.updateListCircleListImageAndListVideo();
                         }
                     }
                 });

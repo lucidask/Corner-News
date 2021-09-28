@@ -11,77 +11,77 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_layout"/>
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/red_circle_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/red_AlertInstance"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/red_circle_list"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <ListView
+            android:id="@+id/red_circle_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            app:layout_constraintTop_toBottomOf="@id/red_circle_tile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/orange_circle_tile" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/red_circle_tile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/red_AlertInstance"
-                android:padding="5dp"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/red_circle_list"
-                app:layout_constraintVertical_chainStyle="packed"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/orange_circle_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/orange_AlertInstance"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/red_circle_list"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/orange_circle_list"/>
 
-            <ListView
-                android:id="@+id/red_circle_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/red_circle_tile"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/orange_circle_tile" />
+        <ListView
+            android:id="@+id/orange_circle_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/orange_circle_tile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/green_circle_tile"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/orange_circle_tile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/orange_AlertInstance"
-                android:padding="5dp"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/red_circle_list"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/orange_circle_list"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/green_circle_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/green_alertinstance"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/orange_circle_list"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/green_circle_list"/>
 
-            <ListView
-                android:id="@+id/orange_circle_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/orange_circle_tile"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/green_circle_tile"/>
+        <ListView
+            android:id="@+id/green_circle_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/green_circle_tile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/green_circle_tile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/green_alertinstance"
-                android:padding="5dp"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/orange_circle_list"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/green_circle_list"/>
-
-            <ListView
-                android:id="@+id/green_circle_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/green_circle_tile"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
