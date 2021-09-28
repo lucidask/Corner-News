@@ -49,4 +49,8 @@
     <string name="resetting_password">Resetting Password</string>
     <string name="enter_your_email_address">Enter your email address</string>
     <string name="reset_password">Reset Password</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
+    <string name="red_zone">Red Zone</string>
+    <string name="orange_zone">Orange Zone</string>
 </resources>

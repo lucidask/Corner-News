@@ -7,7 +7,8 @@ import java.util.List;
 public class Zone {
     CircleInstance circle;
     String description;
-    String zoneCreatedDateTime;
+    String zoneCreatedDate;
+    String zoneCreatedTime;
 
     public Zone() {
 
@@ -16,9 +17,10 @@ public class Zone {
     @Override
     public String toString() {
         return "Zone{" +
-                "ZoneCreatedDateTime=" + zoneCreatedDateTime +
-                ", circle=" + circle +
+                "circle=" + circle +
                 ", description='" + description + '\'' +
+                ", zoneCreatedDate='" + zoneCreatedDate + '\'' +
+                ", zoneCreatedTime='" + zoneCreatedTime + '\'' +
                 '}';
     }
 
@@ -27,17 +29,19 @@ public class Zone {
         this.description = description;
     }
 
-    public Zone(CircleInstance circle, String description, String zoneCreatedDateTime) {
+    public Zone(CircleInstance circle, String description, String zoneCreatedDate, String zoneCreatedTime) {
         this.circle = circle;
         this.description = description;
-        this.zoneCreatedDateTime = zoneCreatedDateTime;
+        this.zoneCreatedDate = zoneCreatedDate;
+        this.zoneCreatedTime = zoneCreatedTime;
     }
 
     public ArrayList<Object> getEventDetailFromThisZone(){
         ArrayList<Object> eventDetail = new ArrayList<>();
         eventDetail.add(description);
         eventDetail.add(circle);
-        eventDetail.add(zoneCreatedDateTime);
+        eventDetail.add(zoneCreatedDate);
+        eventDetail.add(zoneCreatedTime);
         return eventDetail;
     }
 
@@ -58,11 +62,19 @@ public class Zone {
         this.description = description;
     }
 
-    public String getZoneCreatedDateTime() {
-        return zoneCreatedDateTime;
+    public String getZoneCreatedDate() {
+        return zoneCreatedDate;
     }
 
-    public void setZoneCreatedDateTime(String zoneCreatedDateTime) {
-        zoneCreatedDateTime = zoneCreatedDateTime;
+    public void setZoneCreatedDate(String zoneCreatedDate) {
+        this.zoneCreatedDate = zoneCreatedDate;
+    }
+
+    public String getZoneCreatedTime() {
+        return zoneCreatedTime;
+    }
+
+    public void setZoneCreatedTime(String zoneCreatedTime) {
+        this.zoneCreatedTime = zoneCreatedTime;
     }
 }

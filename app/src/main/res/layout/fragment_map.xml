@@ -66,9 +66,17 @@
         android:layout_marginBottom="100dp">
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/bt_list_zone"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:visibility="gone"
+            android:background="@drawable/ic_baseline_list_24"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/bt_refresh"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/ic_baseline_refresh_24"/>
 
         <androidx.appcompat.widget.AppCompatImageButton

@@ -77,7 +77,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
     static GoogleMap gmap;
     RadioGroup radioGroup;
     int SelectedrRadioButton;
-    AppCompatImageButton btClear, btDelete, log_out, bt_edit, bt_refresh;
+    AppCompatImageButton btClear, btDelete, log_out, bt_edit, bt_refresh,btList;
     AppCompatTextView back_arrow;
     static List<Marker> markerList = new ArrayList<>();
     public static final String WHO_CALL = "who_call";
@@ -107,6 +107,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         bt_edit = view.findViewById(R.id.bt_edit);
         btDelete = view.findViewById(R.id.bt_delete);
         bt_refresh = view.findViewById(R.id.bt_refresh);
+        btList=view.findViewById(R.id.bt_list_zone);
         help=view.findViewById(R.id.help_button_for_MapFragment);
         relativeLayoutPopup=view.findViewById(R.id.pathRelativeOnMapFragment);
         close_help=view.findViewById(R.id.close_help_button_for_MapFragment);
@@ -116,6 +117,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         btClear.setOnClickListener(this);
         log_out.setOnClickListener(this);
         help.setOnClickListener(this);
+        btList.setOnClickListener(this);
         close_help.setOnClickListener(this);
 //        editText.setOnClickListener(this);
         supportMapFragment.getMapAsync(this);
@@ -146,6 +148,11 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
             btDelete.setVisibility(View.VISIBLE);
         } else {
             btDelete.setVisibility(View.GONE);
+        }
+        if (DAO.TabCircle.size() > 0) {
+            btList.setVisibility(View.VISIBLE);
+        } else {
+            btList.setVisibility(View.GONE);
         }
         return view;
     }
@@ -179,6 +186,11 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
             btClear.setVisibility(View.VISIBLE);
             bt_edit.setVisibility(View.VISIBLE);
         }
+        if (DAO.TabCircle.size() > 0) {
+            btList.setVisibility(View.VISIBLE);
+        } else {
+            btList.setVisibility(View.GONE);
+        }
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -187,9 +199,10 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         switch (v.getId()) {
             case R.id.bt_delete:
             case R.id.bt_edit:
-                Intent gotodeleteoreditzone = new Intent(this.getContext(), ContainerFrag.class);
-                gotodeleteoreditzone.putExtra(WHO_CALL, v.getId());
-                startActivity(gotodeleteoreditzone);
+            case R.id.bt_list_zone:
+                Intent GoToDeleteOrEditOrViewListZone = new Intent(this.getContext(), ContainerFrag.class);
+                GoToDeleteOrEditOrViewListZone.putExtra(WHO_CALL, v.getId());
+                startActivity(GoToDeleteOrEditOrViewListZone);
                 break;
             case R.id.bt_clear:
                 if(DAO.TabCircleBuf.size()>0){
@@ -250,7 +263,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
         Marker marker = googleMap.addMarker(markerOptions);
         markerList.add(marker);
-        Circle circ = googleMap.addCircle(
+        Circle CircleToMake = googleMap.addCircle(
                 new CircleOptions()
                         .center(latLng)
                         .radius(radius)
@@ -259,7 +272,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
                         .fillColor(color)
                         .clickable(true)
         );
-        DAO.addCircleBuf(new CircleInstance(helperDB.GetUserName(), markerOptions.getTitle(), new Rond(circ)));
+        DAO.addCircleBuf(new CircleInstance(helperDB.GetUserName(), markerOptions.getTitle(), new Rond(CircleToMake)));
         btClear.setVisibility(View.VISIBLE);
         bt_edit.setVisibility(View.VISIBLE);
     }
@@ -306,9 +319,9 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
     @Override
     public void onCircleClick(@NonNull @NotNull Circle circle) {
         DAO.updateListCircleListImageAndListVideo();
-        Intent gotoputmoreinfos = new Intent(this.getContext(), ContainerFrag.class);
-        gotoputmoreinfos.putExtra(INT_FOR_CIRCLE, circle.getCenter().toString());
-        startActivity(gotoputmoreinfos);
+        Intent GoToPutMoreInfos = new Intent(this.getContext(), ContainerFrag.class);
+        GoToPutMoreInfos.putExtra(INT_FOR_CIRCLE, circle.getCenter().toString());
+        startActivity(GoToPutMoreInfos);
     }
 
     private void refreshingFragment(){
@@ -352,8 +365,8 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
     }
 
     public void GetMapLocationPossible(){
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
+        if (ActivityCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -434,7 +447,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
                             ResolvableApiException resolvable = (ResolvableApiException) exception;
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
-                            resolvable.startResolutionForResult(getActivity(),
+                            resolvable.startResolutionForResult(requireActivity(),
                                     LocationRequest.PRIORITY_HIGH_ACCURACY);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.

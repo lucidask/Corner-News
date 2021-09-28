@@ -35,7 +35,8 @@ public class DAO  {
     static ArrayList<CircleInstance> TabCircle =new ArrayList<>();
     static ArrayList<CircleInstance> TabCircleForUserConnected =new ArrayList<>();
     static String descriptionOut;
-    static String DateTimeZone;
+    static String TimeZone;
+    static String DateZone;
     static CircleInstance circleInstanceOut;
     static boolean sureOutput=false;
     static int SizeTabCircleBefore;
@@ -87,11 +88,6 @@ public class DAO  {
                 for (ArrayList<Object> zone : listEventZoneFromDb) { //add all circleinstanse from GroupallTabDb
                     TabCircle.add((CircleInstance)zone.get(1));
                 }
-                if(TabCircle.size()>SizeTabCircleBefore){
-                    System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Mwen pi gran la  ");
-                }
-                System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " +SizeTabCircleBefore+ " " +TabCircle.size());
-//                MyWorkerLauncher();
             }
 
 
@@ -237,14 +233,14 @@ public class DAO  {
         });
     }
 
-    static public void updateTabCircleFromDb (){
-        if(TabCircle.size()>0) {
-            TabCircle.clear();
-        }
-        for (ArrayList<Object> zone : listEventZoneFromDb) { //add all circleinstanse from GroupallTabDb
-            TabCircle.add((CircleInstance)zone.get(1));
-        }
-    }
+//    static public void updateTabCircleFromDb (){
+//        if(TabCircle.size()>0) {
+//            TabCircle.clear();
+//        }
+//        for (ArrayList<Object> zone : listEventZoneFromDb) { //add all circleinstanse from GroupallTabDb
+//            TabCircle.add((CircleInstance)zone.get(1));
+//        }
+//    }
 
     static public void updateTabloginFromDb (){
         if(loginTab.size()>0) {
@@ -263,7 +259,8 @@ public class DAO  {
                 circleInstanceOut = (CircleInstance) listEventZoneFromDb.get(i).get(1);
                 if (instance.getCirclename().equals(circleInstanceOut.getCirclename())) {
                     descriptionOut = (String) listEventZoneFromDb.get(i).get(0);
-                        DateTimeZone=(String) listEventZoneFromDb.get(i).get(2);
+                        DateZone=(String) listEventZoneFromDb.get(i).get(2);
+                        TimeZone=(String) listEventZoneFromDb.get(i).get(3);
                     sureOutput = true;
                 }
             }

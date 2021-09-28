@@ -16,7 +16,7 @@ public class ContainerFrag extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container_frag);
-        whocalltosetfragment();
+        WhoCallToSetFragment();
     }
 
     @Override
@@ -26,13 +26,13 @@ public class ContainerFrag extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("NonConstantResourceId")
-    public void whocalltosetfragment(){
+    public void WhoCallToSetFragment(){
         Intent intent =getIntent();
         Bundle extras=intent.getExtras();
-        int buttonwhocall=extras.getInt("who_call",0);
+        int ButtonWhoCall=extras.getInt("who_call",0);
         Fragment currentFragment = getSupportFragmentManager().
                 findFragmentById(R.id.frame_layout);
-        switch (buttonwhocall){
+        switch (ButtonWhoCall){
             case R.id.button_login:
             case R.id.bt_sign_with_google:
                 if(currentFragment==null){
@@ -70,6 +70,16 @@ public class ContainerFrag extends AppCompatActivity {
                             .commit();
                 }
                 break;
+
+            case R.id.bt_list_zone:
+                if(currentFragment==null){
+                    AllCircleListFragment fragment= new AllCircleListFragment();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frame_layout,fragment)
+                            .commit();
+                }
+                break;
             case R.id.text_view_forgot_password:
                 if(currentFragment==null){
                     ResetPasswordFragment fragment= new ResetPasswordFragment();
@@ -81,11 +91,11 @@ public class ContainerFrag extends AppCompatActivity {
                 break;
             default:
                 if(extras.getString("CIRCLE_WHO_CALL")!=null) {
-                    String circleiam = extras.getString("CIRCLE_WHO_CALL");
+                    String CircleWhoIAm = extras.getString("CIRCLE_WHO_CALL");
                     if (DAO.TabCircle.size() > 0 || DAO.TabCircleBuf.size() > 0  ) {
                         boolean eye=false;
                         for (int i = 0; i < DAO.TabCircle.size(); i++) {
-                            if (DAO.TabCircle.get(i).getRond().getcircleOptions().getCenter().toString().equals(circleiam)) {
+                            if (DAO.TabCircle.get(i).getRond().getcircleOptions().getCenter().toString().equals(CircleWhoIAm)) {
                                 circleInstancebuf=DAO.TabCircle.get(i);
                                 DAO.updateListCircleListImageAndListVideo();
                                 if (currentFragment == null) {
@@ -103,7 +113,7 @@ public class ContainerFrag extends AppCompatActivity {
                         }
                         if (!eye){
                             for(int i=0;i<DAO.TabCircleBuf.size();i++){
-                                if(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter().toString().equals(circleiam)){
+                                if(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter().toString().equals(CircleWhoIAm)){
                                     circleInstancebuf=DAO.TabCircleBuf.get(i);
                                 }
                             }

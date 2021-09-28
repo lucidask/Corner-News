@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DigitalClock;
 import android.widget.EditText;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
@@ -48,6 +49,7 @@ import android.widget.ViewSwitcher;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -76,7 +78,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
     AppCompatImageButton selected_image;
     AppCompatImageButton selected_video;
     Character whosmedia= ' ';
-    AppCompatTextView title,back_arrow;
+    AppCompatTextView title,back_arrow,NowDate;
     EditText editTextDescrption;
     AppCompatTextView title_in_add,image_amount,video_amount;
     CircleInstance circleInstancetoviewname;
@@ -88,6 +90,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
     ProgressBar barProgress;
     LinearLayoutCompat linearProgress,linearTake,linearView,linear_amount;
     HelperDB helperDB;
+    DigitalClock clock;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
@@ -110,6 +113,8 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
         back_arrow=view.findViewById(R.id.back_perso);
         image_amount=view.findViewById(R.id.amount_image_added);
         video_amount=view.findViewById(R.id.amount_video_added);
+        NowDate=view.findViewById(R.id.alert_start_date);
+        clock=view.findViewById(R.id.alert_start_time);
         log_out=view.findViewById(R.id.button_logout);
         log_out.setVisibility(View.GONE);
         textProgress=view.findViewById(R.id.textProgress);
@@ -132,10 +137,10 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
         add_details.setOnClickListener(this);
         circleInstancetoviewname=ContainerFrag.circleInstancebuf;
         title_in_add.setText(circleInstancetoviewname.getCirclename());
+        NowDate.setText(NowDate().toString());
         getCameraPermission();
         SetFactoryForImageSwitcher(switcher);
         DAO.updateListCircleListImageAndListVideo();
-        FirebaseMessaging.getInstance().subscribeToTopic("all");
         return view;
     }
 
@@ -155,11 +160,11 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
                 String CircleCenter=IntentToGetCircleCenter.getStringExtra("CIRCLE_WHO_CALL");
                 for (int i=0;i<DAO.TabCircleBuf.size();i++){
                     if (DAO.TabCircleBuf.get(i).getUsername().equals(helperDB.GetUserName()) &&
-                            Objects.requireNonNull(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter()).toString().equals(CircleCenter)) { // if usercircle match to username
+                            Objects.requireNonNull(DAO.TabCircleBuf.get(i).getRond().getcircleOptions().getCenter()).toString().equals(CircleCenter)) { // if UserCircleName match to username
                         cir=DAO.TabCircleBuf.get(i);
                         Zone zone = null;
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                            zone = new Zone(cir,editTextDescrption.getText().toString(),NowDateTime().toString());
+                            zone = new Zone(cir,editTextDescrption.getText().toString(),NowDate().toString(),clock.getText().toString());
                         }
                         DAO.mDatabase.child(cir.getCirclename()).setValue(zone).addOnCompleteListener(task -> {
                             if(task.isSuccessful()){
@@ -181,7 +186,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
                 dispatchTakeMediaIntent();
                 break;
             case R.id.open_gallery:
-                dialog=selecttypemedia();
+                dialog=SelectTypeMedia();
                 break;
             case R.id.selected_image_view:
                 try {
@@ -219,22 +224,22 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
                 break;
             case R.id.bt_image:
                 dialog.cancel();
-                dispatchgetPictureOnGallery();
+                DispatchGetPictureOnGallery();
                 break;
             case R.id.bt_video:
                 dialog.cancel();
-                dispatchgetVideoOnGallery();
+                DispatchGetVideoOnGallery();
                 break;
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public LocalDateTime NowDateTime(){
+    public LocalDate NowDate(){
 //        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 //        Date date = new Date(System.currentTimeMillis());
 //        System.out.println(formatter.format(date));
 
-        LocalDateTime date = LocalDateTime.now();
+        LocalDate date = LocalDate.now();
 //        return formatter.format(date);
 //        System.out.println("*********************************** now "+ date);
         return date;
@@ -264,7 +269,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private void dispatchgetPictureOnGallery() {
+    private void DispatchGetPictureOnGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
         intent.setType("image/*");
@@ -273,7 +278,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private void dispatchgetVideoOnGallery() {
+    private void DispatchGetVideoOnGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
         intent.setType("video/*");
@@ -291,13 +296,13 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
                 switcher.setVisibility(View.GONE);
                 videoView.setVisibility(View.VISIBLE);
                 videoView.setBackground(null);
-                Uri videouri=data.getData();
+                Uri VideoUri=data.getData();
 //                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
 //                new CompressVideo().execute("false",videouri.toString(),file.getPath());
                 MediaController mediaController= new MediaController(getContext());
                 mediaController.setAnchorView(videoView);
                 videoView.setMediaController(mediaController);
-                videoUris.add(videouri);
+                videoUris.add(VideoUri);
                 videoView.setVideoURI(videoUris.get(0));
                 videoView.start();
                 currentIndexVideo=0;
@@ -308,7 +313,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
                 videoView.setVisibility(View.GONE);
                 switcher.setVisibility(View.VISIBLE);
                 switcher.setBackground(null);
-                imageUris.add(convertBimaptoUri(rotatedImage(reducedPictureSize(currentPhotoPath, switcher),currentPhotoPath)));
+                imageUris.add(ConvertBimapToUri(rotatedImage(reducedPictureSize(currentPhotoPath, switcher),currentPhotoPath)));
                 switcher.setImageURI(imageUris.get(0));
                 currentIndex = 0;
                 whosmedia='i';
@@ -318,17 +323,17 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
         if(requestCode==PICK_IMAGES_CODE && resultCode == RESULT_OK) {
             if(data.getClipData() != null){
                 for(int i=0;i<data.getClipData().getItemCount();i++){
-                    Uri imageuri=data.getClipData().getItemAt(i).getUri();
-                    imageUris.add(imageuri);
+                    Uri ImageUri=data.getClipData().getItemAt(i).getUri();
+                    imageUris.add(ImageUri);
                 }
                 videoView.setVisibility(View.GONE);
             }
             else {
-                Uri imageuri = data.getData();
+                Uri ImageUri = data.getData();
 //                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
 //                new CompressImage().execute("false",imageuri.toString(),file.getPath());
                 videoView.setVisibility(View.GONE);
-                imageUris.add(imageuri);
+                imageUris.add(ImageUri);
 
             }
             tomakeViewVisible();
@@ -341,13 +346,13 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
         if(requestCode==PICK_VIDEOS_CODE && resultCode == RESULT_OK) {
             if(data.getClipData() != null){
                 for(int i=0;i<data.getClipData().getItemCount();i++){
-                    Uri videouri=data.getClipData().getItemAt(i).getUri();
-                    videoUris.add(videouri);
+                    Uri VideoUri=data.getClipData().getItemAt(i).getUri();
+                    videoUris.add(VideoUri);
                 }
             }
             else {
-                Uri videouri = data.getData();
-                videoUris.add(videouri);
+                Uri VideoUri = data.getData();
+                videoUris.add(VideoUri);
             }
             tomakeViewVisible();
             videoView.setBackground(null);
@@ -514,7 +519,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
             return gestureDetector.onTouchEvent(event) ;
         }
     }
-    public AlertDialog selecttypemedia(){
+    public AlertDialog SelectTypeMedia(){
         builderfortypemedia = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.alertdialog, null);
@@ -527,7 +532,7 @@ public class AddDetailForZoneFragment extends Fragment implements View.OnClickLi
         return builderfortypemedia.show();
     }
 
-    public Uri convertBimaptoUri(Bitmap bitmap){
+    public Uri ConvertBimapToUri(Bitmap bitmap){
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(requireContext().getContentResolver(), bitmap, "val", null);

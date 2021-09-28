@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         login.setOnClickListener(this);
         create_account.setOnClickListener(this);
         forgot_password.setOnClickListener(this);
-//        DAO.saveloginToDatabase(new Login("daskbertrand@gmail.com","Akin"),"Connaistoi");
         back_arrow.setVisibility(View.GONE);
         title.setText("Corner News");
         AskMultiplePermission();
@@ -100,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         googleSignInClient= GoogleSignIn.getClient(MainActivity.this,googleSignInOptions);
         GetWhoLogin();
         if(GetIfAlreadyConnect){
-            Intent gotomap=new Intent(MainActivity.this,ContainerFrag.class);
-            gotomap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
-            startActivity(gotomap);
+            Intent GotoMap=new Intent(MainActivity.this,ContainerFrag.class);
+            GotoMap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
+            startActivity(GotoMap);
         }
         //        checkFirstRun();
     }
@@ -118,11 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DAO.updateListCircleListImageAndListVideo();
         username.getText().clear();
         password.getText().clear();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

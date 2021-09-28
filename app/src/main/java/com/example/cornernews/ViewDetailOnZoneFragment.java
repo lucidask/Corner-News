@@ -61,12 +61,12 @@ public class ViewDetailOnZoneFragment extends Fragment implements View.OnClickLi
     int currentIndexVideo=0;
     AppCompatImageButton button_image_view,button_video_view,download_selected_item;
     Character whosmedia= ' ';
-    AppCompatTextView title;
+    AppCompatTextView title,alert_start_date,alert_start_time;
     AppCompatTextView title_in_view,amount_image,amount_video;
     AppCompatTextView back_arrow;
-    AppCompatTextView descrition_view;
-    CircleInstance circleInstancetoviewname;
     AppCompatImageButton log_out;
+    CircleInstance circleInstancetoviewname;
+    AppCompatTextView descrition_view;
     ProgressBar progressBarDownload;
     LinearLayoutCompat linear_select_media_type,linear_amout_media;
     HelperDB helperDB;
@@ -84,10 +84,12 @@ public class ViewDetailOnZoneFragment extends Fragment implements View.OnClickLi
         button_image_view=view.findViewById(R.id.button_image_view);
         button_video_view=view.findViewById(R.id.button_video_view);
         title=view.findViewById(R.id.title);
+        alert_start_date=view.findViewById(R.id.alert_start_date_in_view);
+        alert_start_time=view.findViewById(R.id.alert_start_time_in_view);
         amount_image=view.findViewById(R.id.amount_image_view);
         amount_video=view.findViewById(R.id.amount_video_view);
-        back_arrow=view.findViewById(R.id.back_perso);
         descrition_view=view.findViewById(R.id.description_view);
+        back_arrow=view.findViewById(R.id.back_perso);
         log_out=view.findViewById(R.id.button_logout);
         progressBarDownload=view.findViewById(R.id.progress_download);
         linear_select_media_type=view.findViewById(R.id.linear_media_view_view);
@@ -112,6 +114,8 @@ public class ViewDetailOnZoneFragment extends Fragment implements View.OnClickLi
         DAO.addCircleToOutput(circleInstancetoviewname);
         if(DAO.sureOutput){
             descrition_view.setText(DAO.descriptionOut);
+            alert_start_date.setText(DAO.DateZone);
+            alert_start_time.setText(DAO.TimeZone);
 //            System.out.println("*********************************** Description "+ DAO.descriptionOut);
 //            System.out.println("*********************************** Date Zone "+ DAO.DateTimeZone);
             resultmedia();
