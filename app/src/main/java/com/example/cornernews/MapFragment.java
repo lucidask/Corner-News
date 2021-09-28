@@ -279,9 +279,9 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
     public void CircleToMap(GoogleMap googleMap) {
         if (DAO.TabCircle.size() > 0) {
             for (int i = 0; i < DAO.TabCircle.size(); i++) {
-                if(DAO.TabCircle.get(i).getCirclename().contains("Green")){
+                if(DAO.TabCircle.get(i).getAlertName().contains("Green")){
                     drawCircleInstance(googleMap,DAO.TabCircle.get(i),BitmapDescriptorFactory.HUE_GREEN,markerList);
-                }else if(DAO.TabCircle.get(i).getCirclename().contains("Orange")){
+                }else if(DAO.TabCircle.get(i).getAlertName().contains("Orange")){
                     drawCircleInstance(googleMap,DAO.TabCircle.get(i),BitmapDescriptorFactory.HUE_ORANGE,markerList);
                 }else {
                     drawCircleInstance(googleMap,DAO.TabCircle.get(i),BitmapDescriptorFactory.HUE_RED,markerList);
@@ -294,7 +294,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         googleMap.addCircle(circleInstance.getRond().getcircleOptions());
         MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(markerColor))
                 .position(Objects.requireNonNull(circleInstance.getRond().getcircleOptions().getCenter()));
-        markerOptions.title(circleInstance.getCirclename());
+        markerOptions.title(circleInstance.getAlertName());
         Marker marker = googleMap.addMarker(markerOptions);
        markerList.add(marker);
     }
@@ -304,9 +304,9 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         if (DAO.TabCircleBuf.size() > 0) {
             for (int i = 0; i < DAO.TabCircleBuf.size(); i++) {
                 if (DAO.TabCircleBuf.get(i).getUsername().equals(DAO.Whologin.get(0).getUsername())) {
-                    if(DAO.TabCircleBuf.get(i).getCirclename().contains("Green")){
+                    if(DAO.TabCircleBuf.get(i).getAlertName().contains("Green")){
                         drawCircleInstance(googleMap,DAO.TabCircleBuf.get(i),BitmapDescriptorFactory.HUE_GREEN,markerList);
-                    }else if(DAO.TabCircleBuf.get(i).getCirclename().contains("Orange")){
+                    }else if(DAO.TabCircleBuf.get(i).getAlertName().contains("Orange")){
                         drawCircleInstance(googleMap,DAO.TabCircleBuf.get(i),BitmapDescriptorFactory.HUE_ORANGE,markerList);
                     }else {
                         drawCircleInstance(googleMap,DAO.TabCircleBuf.get(i),BitmapDescriptorFactory.HUE_RED,markerList);
@@ -389,13 +389,13 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         SelectedrRadioButton = radioGroup.getCheckedRadioButtonId();
         switch (SelectedrRadioButton) {
             case R.id.radio_green:
-                drawCircle(gmap, latLng, Color.rgb(34, 139, 34), "_Circle_Green_", 10,BitmapDescriptorFactory.HUE_GREEN);
+                drawCircle(gmap, latLng, Color.rgb(34, 139, 34), "_Green_Alert_", 10,BitmapDescriptorFactory.HUE_GREEN);
                 break;
             case R.id.radio_orange:
-                drawCircle(gmap, latLng, Color.rgb(255, 140, 0), "_Circle_Orange_", 10.,BitmapDescriptorFactory.HUE_ORANGE);
+                drawCircle(gmap, latLng, Color.rgb(255, 140, 0), "_Orange_Alert_", 10,BitmapDescriptorFactory.HUE_ORANGE);
                 break;
             case R.id.radio_red:
-                drawCircle(gmap, latLng, Color.RED, "_Circle_Red_", 10,BitmapDescriptorFactory.HUE_RED);
+                drawCircle(gmap, latLng, Color.RED, "_Red_Alert_", 10,BitmapDescriptorFactory.HUE_RED);
                 break;
             default:
                 Toast.makeText(MapFragment.this.getContext(), "Select Category",

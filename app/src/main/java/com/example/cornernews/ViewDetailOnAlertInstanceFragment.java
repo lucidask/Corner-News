@@ -109,7 +109,7 @@ public class ViewDetailOnAlertInstanceFragment extends Fragment implements View.
         button_video_view.setOnClickListener(this);
         SetFactoryForImageSwitcher(switcher);
         circleInstancetoviewname=ContainerFrag.circleInstancebuf;
-        title_in_view.setText(circleInstancetoviewname.getCirclename());
+        title_in_view.setText(circleInstancetoviewname.getAlertName());
         DAO.updateListCircleListImageAndListVideo();
         DAO.addCircleToOutput(circleInstancetoviewname);
         if(DAO.sureOutput){
@@ -213,7 +213,7 @@ public class ViewDetailOnAlertInstanceFragment extends Fragment implements View.
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void resultmedia(){
-       getmediaforCircleClicked(circleInstancetoviewname.getCirclename());
+       getmediaforCircleClicked(circleInstancetoviewname.getAlertName());
         try {
             if(imageUrl.size()>0) {
                 tomakeViewVisible();

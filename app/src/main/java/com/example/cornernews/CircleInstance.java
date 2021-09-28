@@ -2,16 +2,14 @@ package com.example.cornernews;
 
 public class CircleInstance {
     private String username;
-    private String circleName;
+    private String AlertName;
     private  Rond rond;
 
-    public CircleInstance() {
+    public CircleInstance() { }
 
-    }
-
-    public CircleInstance(String username, String circleName, Rond circle) {
+    public CircleInstance(String username, String AlertName, Rond circle) {
         this.username = username;
-        this.circleName = circleName;
+        this.AlertName = AlertName;
         this.rond = circle;
     }
 
@@ -19,7 +17,7 @@ public class CircleInstance {
     public String toString() {
         return "CircleInstance{" +
                 "username='" + username + '\'' +
-                ", circleName='" + circleName + '\'' +
+                ", AlertName='" + AlertName + '\'' +
                 ", rond=" + rond +
                 '}';
     }
@@ -40,11 +38,11 @@ public class CircleInstance {
         this.username = username;
     }
 
-    public String getCirclename() {
-        return circleName;
+    public String getAlertName() {
+        return AlertName;
     }
 
-    public void setCirclename(String circleName) {
-        this.circleName = circleName;
+    public void setAlertName(String AlertName) {
+        this.AlertName = AlertName;
     }
 }

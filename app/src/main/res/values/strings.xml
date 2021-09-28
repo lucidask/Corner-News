@@ -3,7 +3,7 @@
     <string name="save">Save</string>
     <string name="search">Search...</string>
     <string name="map_key" translatable="false">AIzaSyBR442ETc1ih8UI_amGf-FPE7FE7eC8yn4</string>
-    <string name="AlertInstance_description">AlertInstance Description...</string>
+    <string name="AlertInstance_description">Description...</string>
     <string name="view_selected_image">View Selected Images</string>
     <string name="view_selected_video">View Selected Videos</string>
     <string name="sign_in">Sign in</string>
@@ -50,7 +50,7 @@
     <string name="enter_your_email_address">Enter your email address</string>
     <string name="reset_password">Reset Password</string>
     <string name="time">Time</string>
-    <string name="red_AlertInstance">Red AlertInstance</string>
-    <string name="orange_AlertInstance">Orange AlertInstance</string>
+    <string name="red_AlertInstance">Red Alert</string>
+    <string name="orange_AlertInstance">Orange Alert</string>
     <string name="date">Date</string>
 </resources>

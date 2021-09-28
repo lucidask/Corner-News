@@ -194,9 +194,9 @@ public class DAO  {
         tableDesTrioCircleImageLinkListVideoLinkList.clear();
         for (CircleInstance circleName:TabCircle) {
             ArrayList<Object> trioCircleImageListVideoList=new ArrayList<>();
-            trioCircleImageListVideoList.add(circleName.getCirclename());
-            trioCircleImageListVideoList.add( getAListLinkMediaFromCircleName(circleName.getCirclename(),allImageLinkFromDb));
-            trioCircleImageListVideoList.add( getAListLinkMediaFromCircleName(circleName.getCirclename(),allVideoLinkFromDb));
+            trioCircleImageListVideoList.add(circleName.getAlertName());
+            trioCircleImageListVideoList.add( getAListLinkMediaFromCircleName(circleName.getAlertName(),allImageLinkFromDb));
+            trioCircleImageListVideoList.add( getAListLinkMediaFromCircleName(circleName.getAlertName(),allVideoLinkFromDb));
             tableDesTrioCircleImageLinkListVideoLinkList.add(trioCircleImageListVideoList);
         }
     }
@@ -257,7 +257,7 @@ public class DAO  {
         for(int i=0; i<listEventAlertInstanceFromDb.size();i++){
             if(instance!=null) {
                 circleInstanceOut = (CircleInstance) listEventAlertInstanceFromDb.get(i).get(1);
-                if (instance.getCirclename().equals(circleInstanceOut.getCirclename())) {
+                if (instance.getAlertName().equals(circleInstanceOut.getAlertName())) {
                     descriptionOut = (String) listEventAlertInstanceFromDb.get(i).get(0);
                         DateAlertInstance=(String) listEventAlertInstanceFromDb.get(i).get(2);
                         TimeAlertInstance=(String) listEventAlertInstanceFromDb.get(i).get(3);

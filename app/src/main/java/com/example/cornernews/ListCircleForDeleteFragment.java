@@ -117,7 +117,7 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
         for (int i = 0; i < DAO.TabCircleForUserConnected.size(); i++) {
             if (circle.getCenter().latitude == DAO.TabCircleForUserConnected.get(i).getRond().getRondLat() &&
                     circle.getCenter().longitude == DAO.TabCircleForUserConnected.get(i).getRond().getRondLng()) {
-                deleteAlertInstance(DAO.TabCircleForUserConnected.get(i).getCirclename());
+                deleteAlertInstance(DAO.TabCircleForUserConnected.get(i).getAlertName());
                 DAO.TabCircleForUserConnected.remove(i);
                 gmap.clear();
                 getCircletoMapforDelete(gmap);
@@ -161,9 +161,9 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
         if (DAO.TabCircleForUserConnected.size() > 0) {
             for (int i = 0; i < DAO.TabCircleForUserConnected.size(); i++) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if(DAO.TabCircleForUserConnected.get(i).getCirclename().contains("Green")){
+                    if(DAO.TabCircleForUserConnected.get(i).getAlertName().contains("Green")){
                         MapFragment.drawCircleInstance(googleMap,DAO.TabCircleForUserConnected.get(i), BitmapDescriptorFactory.HUE_GREEN,markerList);
-                    }else if(DAO.TabCircleForUserConnected.get(i).getCirclename().contains("Orange")){
+                    }else if(DAO.TabCircleForUserConnected.get(i).getAlertName().contains("Orange")){
                         MapFragment.drawCircleInstance(googleMap,DAO.TabCircleForUserConnected.get(i),BitmapDescriptorFactory.HUE_ORANGE,markerList);
                     }else {
                         MapFragment.drawCircleInstance(googleMap,DAO.TabCircleForUserConnected.get(i),BitmapDescriptorFactory.HUE_RED,markerList);

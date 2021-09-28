@@ -277,15 +277,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public AlertDialog setdialogonstart(){
-        AlertDialog.Builder dialogforstart = new AlertDialog.Builder(this);
-        dialogforstart.setTitle("");
-        LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.alertdialogforstart, null);
-        dialogforstart.setView(view);
-        dialogforstart.create();
-        return dialogforstart.show();
-    }
+//    public AlertDialog setdialogonstart(){
+//        AlertDialog.Builder dialogforstart = new AlertDialog.Builder(this);
+//        dialogforstart.setTitle("");
+//        LayoutInflater inflater = this.getLayoutInflater();
+//        View view = inflater.inflate(R.layout.alertdialogforstart, null);
+//        dialogforstart.setView(view);
+//        dialogforstart.create();
+//        return dialogforstart.show();
+//    }
 
     public void SendLogcatMail(){
 
@@ -390,60 +390,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(MainActivity.this," Welcome "+ helperDB.GetUserName().toUpperCase(),
                     Toast.LENGTH_SHORT).show();
             GetIfAlreadyConnect=true;
-            String UserID= firebaseUser.getUid();
-            DAO.logDatabase.child(UserID).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Login userLogin=snapshot.getValue(Login.class);
-                    if(userLogin!=null){
-//                        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!! Li nan login nan "+ userLogin.getEmail()+" "+userLogin.getUsername());
-//                        DAO.addWhoLogin(new Login(userLogin.getEmail(),userLogin.getUsername()));
-                    }else {
-//                        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!! Se nan Google li ye "+ firebaseUser.getEmail()+" "+firebaseUser.getDisplayName());
-//                        DAO.addWhoLogin(new Login( firebaseUser.getEmail(), firebaseUser.getDisplayName()));
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    DAO.UserAuth.signOut();
-                    Toast.makeText(MainActivity.this," Something wrong happened! Reconnect Please",
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 
 
-    private void checkFirstRun() {
-
-        final String PREFS_NAME = "MyPrefsFile";
-        final String PREF_VERSION_CODE_KEY = "version_code";
-        final int DOESNT_EXIST = -1;
-
-        // Get current version code
-        int currentVersionCode = BuildConfig.VERSION_CODE;
-
-        // Get saved version code
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        int savedVersionCode = prefs.getInt(PREF_VERSION_CODE_KEY, DOESNT_EXIST);
-
-        // Check for first run or upgrade
-        if (currentVersionCode == savedVersionCode) {
-
-            // This is just a normal run
-            return;
-
-        } else if (savedVersionCode == DOESNT_EXIST) {
-            dialog=setdialogonstart();
-            // TODO This is a new install (or the user cleared the shared preferences)
-
-        } else if (currentVersionCode > savedVersionCode) {
-
-            // TODO This is an upgrade
-        }
-
-        // Update the shared preferences with the current version code
-        prefs.edit().putInt(PREF_VERSION_CODE_KEY, currentVersionCode).apply();
-    }
+//    private void checkFirstRun() {
+//
+//        final String PREFS_NAME = "MyPrefsFile";
+//        final String PREF_VERSION_CODE_KEY = "version_code";
+//        final int DOESNT_EXIST = -1;
+//
+//        // Get current version code
+//        int currentVersionCode = BuildConfig.VERSION_CODE;
+//
+//        // Get saved version code
+//        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//        int savedVersionCode = prefs.getInt(PREF_VERSION_CODE_KEY, DOESNT_EXIST);
+//
+//        // Check for first run or upgrade
+//        if (currentVersionCode == savedVersionCode) {
+//
+//            // This is just a normal run
+//            return;
+//
+//        } else if (savedVersionCode == DOESNT_EXIST) {
+//            dialog=setdialogonstart();
+//            // TODO This is a new install (or the user cleared the shared preferences)
+//
+//        } else if (currentVersionCode > savedVersionCode) {
+//
+//            // TODO This is an upgrade
+//        }
+//
+//        // Update the shared preferences with the current version code
+//        prefs.edit().putInt(PREF_VERSION_CODE_KEY, currentVersionCode).apply();
+//    }
 }

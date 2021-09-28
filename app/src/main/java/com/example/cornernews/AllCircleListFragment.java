@@ -57,7 +57,7 @@ public class AllCircleListFragment extends Fragment implements AdapterView.OnIte
 
         if(DAO.TabCircle.size()>0){
             for(int i=0;i<DAO.TabCircle.size();i++){
-                if(DAO.TabCircle.get(i).getCirclename().contains(colorName)){
+                if(DAO.TabCircle.get(i).getAlertName().contains(colorName)){
                     arrayList.add(DAO.TabCircle.get(i));
                 }
             }
@@ -67,8 +67,8 @@ public class AllCircleListFragment extends Fragment implements AdapterView.OnIte
                 ArrayList<String> stringArrayList=new ArrayList<>();
                 for(int j=0; j<DAO.listEventAlertInstanceFromDb.size();j++){
                     CircleInstance circleInstanceBuf = (CircleInstance) DAO.listEventAlertInstanceFromDb.get(j).get(1);
-                    if(arrayList.get(i).getCirclename().equals(circleInstanceBuf.getCirclename())) {
-                        AlertInstanceName=arrayList.get(i).getCirclename();
+                    if(arrayList.get(i).getAlertName().equals(circleInstanceBuf.getAlertName())) {
+                        AlertInstanceName=arrayList.get(i).getAlertName();
                         DateAlertInstance=(String) DAO.listEventAlertInstanceFromDb.get(j).get(2);
                         TimeAlertInstance=(String) DAO.listEventAlertInstanceFromDb.get(j).get(3);
                         stringArrayList.add(AlertInstanceName);
@@ -80,7 +80,7 @@ public class AllCircleListFragment extends Fragment implements AdapterView.OnIte
                 if(DAO.tableDesTrioCircleImageLinkListVideoLinkList.size()>0){
                     for(int m=0;m<DAO.tableDesTrioCircleImageLinkListVideoLinkList.size();m++){
                         String nameCircleToGetMedia= (String) DAO.tableDesTrioCircleImageLinkListVideoLinkList.get(m).get(0);
-                        if(arrayList.get(i).getCirclename().equals(nameCircleToGetMedia)){
+                        if(arrayList.get(i).getAlertName().equals(nameCircleToGetMedia)){
                             imageUris=(ArrayList<Uri>) DAO.tableDesTrioCircleImageLinkListVideoLinkList.get(m).get(1);
                             videoUris=(ArrayList<Uri>) DAO.tableDesTrioCircleImageLinkListVideoLinkList.get(m).get(2);
 //                            System.out.println("**************************************************************** "+nameCircleToGetMedia+" "+imageUris.size()+" "+ videoUris.size());

@@ -136,7 +136,7 @@ public class AddDetailForAlertInstanceFragment extends Fragment implements View.
         open_gallery.setOnClickListener(this);
         add_details.setOnClickListener(this);
         circleInstancetoviewname=ContainerFrag.circleInstancebuf;
-        title_in_add.setText(circleInstancetoviewname.getCirclename());
+        title_in_add.setText(circleInstancetoviewname.getAlertName());
         NowDate.setText(NowDate().toString());
         getCameraPermission();
         SetFactoryForImageSwitcher(switcher);
@@ -166,7 +166,7 @@ public class AddDetailForAlertInstanceFragment extends Fragment implements View.
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                             AlertInstance = new AlertInstance(cir,editTextDescrption.getText().toString(),NowDate().toString(),clock.getText().toString());
                         }
-                        DAO.AlertDatabase.child(cir.getCirclename()).setValue(AlertInstance).addOnCompleteListener(task -> {
+                        DAO.AlertDatabase.child(cir.getAlertName()).setValue(AlertInstance).addOnCompleteListener(task -> {
                             if(task.isSuccessful()){
                                 Toast.makeText(getContext(),"Successfully added circled area",
                                         Toast.LENGTH_SHORT).show();
@@ -663,7 +663,7 @@ public class AddDetailForAlertInstanceFragment extends Fragment implements View.
                 ImageName.putFile(IndividualImage).addOnSuccessListener(taskSnapshot -> ImageName.getDownloadUrl().addOnSuccessListener(uri -> {
                     try {
                         Uri url=uri;
-                        MediaLink imageLink=new MediaLink(cir.getCirclename(),url.toString());
+                        MediaLink imageLink=new MediaLink(cir.getAlertName(),url.toString());
                         DAO.mediaDatabase.child("imageBranch").push().setValue(imageLink);
                         images.clear();
                     }catch (Exception e){
@@ -687,7 +687,7 @@ public class AddDetailForAlertInstanceFragment extends Fragment implements View.
                 VideoName.putFile(IndividualVideo).addOnSuccessListener(taskSnapshot -> VideoName.getDownloadUrl().addOnSuccessListener(uri -> {
                     try {
                         Uri url=uri;
-                        MediaLink videoLink=new MediaLink(cir.getCirclename(),url.toString());
+                        MediaLink videoLink=new MediaLink(cir.getAlertName(),url.toString());
                         DAO.mediaDatabase.child("videoBranch").push().setValue(videoLink);
                         videos.clear();
                     }catch (Exception e){
