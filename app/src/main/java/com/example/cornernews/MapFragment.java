@@ -23,6 +23,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -288,6 +289,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
                 }
             }
         }
+        refresh(1500,googleMap);
     }
 
     public static void drawCircleInstance(GoogleMap googleMap,CircleInstance circleInstance,float markerColor,List<Marker> markerList){
@@ -332,22 +334,21 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
             } else {
                 requireActivity().getSupportFragmentManager().beginTransaction().detach(MapFragment.this).attach(MapFragment.this).commit();
             }
-//            refresh(1000);
         }catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-//    private void refresh(int millisecond) {
-//        final Handler handler=new Handler();
-//        final  Runnable runnable= new Runnable() {
-//            @Override
-//            public void run() {
-//                refreshingFragment();
-//            }
-//        };
-//        handler.postDelayed(runnable,millisecond);
-//    }
+    private void refresh(int millisecond,GoogleMap googleMap) {
+        final Handler handler=new Handler();
+        final  Runnable runnable= new Runnable() {
+            @Override
+            public void run() {
+                CircleToMap(googleMap);
+            }
+        };
+        handler.postDelayed(runnable,millisecond);
+    }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {

@@ -36,10 +36,73 @@ public class AllCircleListFragment extends Fragment implements AdapterView.OnIte
         log_out.setVisibility(View.GONE);
         back_arrow.setOnClickListener(this);
 //        TitleToGetInVisible();
-        ToSortAlertInstances("Red", redList);
-        ToSortAlertInstances("Green", greenList);
-        ToSortAlertInstances("Orange", orangeList);
+        ToSortAlert("Red",redList);
+        ToSortAlert("Orange",orangeList);
+        ToSortAlert("Green",greenList);
+//        ToSortAlertInstances("Red", redList);
+//        ToSortAlertInstances("Green", greenList);
+//        ToSortAlertInstances("Orange", orangeList);
         return view;
+    }
+
+    public void ToSortAlert(String colorName,ListView listView) {
+//        gran tab ki pral afiche a
+        ArrayList<AlertInfo> AlertInfoTab = new ArrayList<>();
+//        tab kap gen AlertInstance menm koule yo
+        ArrayList<CircleInstance> arrayList = new ArrayList<>();
+//        tab ki pral kenbe lyen imaj ak videyo yo
+        ArrayList<Uri> imageUris = null;
+        ArrayList<Uri> videoUris = null;
+//        varyab ki pral kenbe enfomasyon AlertInstance nan
+        String AlertInstanceName = "";
+        String DateAlertInstance = "";
+        String TimeAlertInstance = "";
+
+        if (DAO.TabCircle.size() > 0) {
+            for (int i = 0; i < DAO.TabCircle.size(); i++) {
+                if (DAO.TabCircle.get(i).getAlertName().contains(colorName)) {
+                    arrayList.add(DAO.TabCircle.get(i));
+                }
+            }
+        }
+        if (arrayList.size() > 0) {
+            for (int i = 0; i < arrayList.size(); i++) {
+                for (int j = 0; j < DAO.listEventAlertInstanceFromDb.size(); j++) {
+                    CircleInstance circleInstanceBuf = (CircleInstance) DAO.listEventAlertInstanceFromDb.get(j).get(1);
+                    if (arrayList.get(i).getAlertName().equals(circleInstanceBuf.getAlertName())) {
+                        AlertInstanceName = arrayList.get(i).getAlertName();
+                        DateAlertInstance = (String) DAO.listEventAlertInstanceFromDb.get(j).get(2);
+                        TimeAlertInstance = (String) DAO.listEventAlertInstanceFromDb.get(j).get(3);
+                    }
+                }
+                if (DAO.tableDesTrioCircleImageLinkListVideoLinkList.size() > 0) {
+                    for (int m = 0; m < DAO.tableDesTrioCircleImageLinkListVideoLinkList.size(); m++) {
+                        String nameCircleToGetMedia = (String) DAO.tableDesTrioCircleImageLinkListVideoLinkList.get(m).get(0);
+                        if (arrayList.get(i).getAlertName().equals(nameCircleToGetMedia)) {
+                            imageUris = (ArrayList<Uri>) DAO.tableDesTrioCircleImageLinkListVideoLinkList.get(m).get(1);
+                            videoUris = (ArrayList<Uri>) DAO.tableDesTrioCircleImageLinkListVideoLinkList.get(m).get(2);
+                        }
+                    }
+                }
+                if(colorName.equals("Red")){
+                    AlertInfoTab.add(new AlertInfo(R.drawable.ic_baseline_circle_red,AlertInstanceName,DateAlertInstance+" "+ TimeAlertInstance,
+                            "Image: "+imageUris.size()+" Video: "+videoUris.size()));
+                    title_red.setText(AlertInfoTab.size()+" Red Alerts");
+                }else if(colorName.equals("Orange")){
+                    AlertInfoTab.add(new AlertInfo(R.drawable.ic_baseline_circle_orange,AlertInstanceName,DateAlertInstance+" "+ TimeAlertInstance,
+                            "Image: "+imageUris.size()+" Video: "+videoUris.size()));
+                    title_orange.setText(AlertInfoTab.size()+" Orange Alerts");
+                }else {
+                    AlertInfoTab.add(new AlertInfo(R.drawable.ic_baseline_circle_green,AlertInstanceName,DateAlertInstance+" "+ TimeAlertInstance,
+                            "Image: "+imageUris.size()+" Video: "+videoUris.size()));
+                    title_green.setText(AlertInfoTab.size()+" Green Alerts");
+                }
+            }
+        }
+        AlertAdapter alertAdapter = new AlertAdapter(requireContext(),R.layout.list_row,AlertInfoTab);
+        listView.setAdapter(alertAdapter);
+        listView.setOnItemClickListener(this);
+
     }
 
     public void ToSortAlertInstances(String colorName, ListView listView){

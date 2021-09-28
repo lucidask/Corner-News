@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/AlertImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/bg_round2"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/AlertName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/AlertImage"
+        android:layout_marginLeft="20dp"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:text="@string/alert_name"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/AlertDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/AlertImage"
+        android:layout_marginLeft="20dp"
+        android:singleLine="true"
+        style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        android:layout_below="@id/AlertName"
+        android:text="@string/alert_date_time"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/AlertCountImageAndVideo"
+        style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/AlertDateTime"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/AlertImage"
+        android:singleLine="true"
+        android:text="@string/alert_date_time" />
+
+
+</RelativeLayout>
