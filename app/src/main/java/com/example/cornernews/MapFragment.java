@@ -155,6 +155,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         } else {
             btList.setVisibility(View.GONE);
         }
+        MyWorkerLauncher();
         return view;
     }
 
@@ -192,6 +193,7 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
         } else {
             btList.setVisibility(View.GONE);
         }
+        MyWorkerLauncher();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -529,19 +531,6 @@ public class MapFragment extends Fragment implements View.OnClickListener,OnMapR
             }
         }
     }
-//    public void MyWorkerLauncher(CircleInstance instance){
-//        LatLng latLng=new LatLng(instance.getRond().getRondLat(),instance.getRond().getRondLng());
-//        WorkRequest WorkCheckUpdate = new OneTimeWorkRequest.Builder(WorkerToEventDataChange.class)
-//                .setInputData(
-//                        new Data.Builder()
-//                                .putString("CircleInstanceName", instance.getCirclename())
-//                                .putString("CircleInstanceCenter", latLng.toString())
-//                                .build()
-//                )
-//                .build();
-//
-//        WorkManager.getInstance().enqueue(WorkCheckUpdate);
-//    }
 
     public void MyWorkerLauncher(){
         WorkRequest WorkCheckUpdate = new OneTimeWorkRequest.Builder(WorkerToEventDataChange.class).build();

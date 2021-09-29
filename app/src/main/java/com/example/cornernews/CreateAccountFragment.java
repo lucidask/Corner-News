@@ -226,6 +226,7 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
                         assert user != null;
                         if(!user.isEmailVerified()){
                             user.sendEmailVerification();
+                            DAO.UserAuth.signOut();
                             progressBar.setVisibility(View.INVISIBLE);
                             Objects.requireNonNull(input_email.getText()).clear();
                             Objects.requireNonNull(create_username.getText()).clear();

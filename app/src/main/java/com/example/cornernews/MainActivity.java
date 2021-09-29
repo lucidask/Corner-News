@@ -99,11 +99,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         googleSignInClient= GoogleSignIn.getClient(MainActivity.this,googleSignInOptions);
         GetWhoLogin();
         if(GetIfAlreadyConnect){
-            Intent GotoMap=new Intent(MainActivity.this,ContainerFrag.class);
-            GotoMap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
-            startActivity(GotoMap);
+            Intent GoToMap=new Intent(MainActivity.this,ContainerFrag.class);
+            GoToMap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
+            startActivity(GoToMap);
         }
-        //        checkFirstRun();
     }
 
     @Override
@@ -126,15 +125,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (v.getId()){
                 case R.id.button_login:
                     if(DAO.isConnected(MainActivity.this)){
-                        if(!(Objects.requireNonNull(username.getText()).toString().trim().isEmpty() || password.getText().toString().trim().isEmpty())){
+                        if(!(Objects.requireNonNull(username.getText()).toString().trim().isEmpty() || Objects.requireNonNull(password.getText()).toString().trim().isEmpty())){
                             FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
                             if (firebaseUser != null) {
                                 if(Objects.equals(firebaseUser.getEmail(), username.getText())){
                                     Toast.makeText(MainActivity.this,"Welcome "+helperDB.GetUserName().toUpperCase(),
                                             Toast.LENGTH_SHORT).show();
-                                    Intent gotomap=new Intent(MainActivity.this,ContainerFrag.class);
-                                    gotomap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
-                                    startActivity(gotomap);
+                                    Intent GoToMap=new Intent(MainActivity.this,ContainerFrag.class);
+                                    GoToMap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
+                                    startActivity(GoToMap);
                                 }else {
                                     if (googleSignInClient != null) {
                                         googleSignInClient.signOut().addOnCompleteListener(task -> {
@@ -186,10 +185,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     private void Log_in() {
+        String userEmail=null;
         if(DAO.loginTab.size()>0){
             for(int i=0;i<DAO.loginTab.size();i++){
-                if(DAO.loginTab.get(i).getUsername().equals(username.getText().toString()) ||
+                if(DAO.loginTab.get(i).getUsername().equals(Objects.requireNonNull(username.getText()).toString()) ||
                         DAO.loginTab.get(i).getEmail().equals(username.getText().toString())){
+                    userEmail=DAO.loginTab.get(i).getEmail();
                     tem=true;
                     helperDB.DeleteWhologin();
                     helperDB.insertLogin(DAO.loginTab.get(i));
@@ -199,7 +200,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(tem){
                 tem=false;
                 progressBar.setVisibility(View.VISIBLE);
-                DAO.UserAuth.signInWithEmailAndPassword(username.getText().toString().trim(),password.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                DAO.UserAuth.signInWithEmailAndPassword(userEmail,
+                        Objects.requireNonNull(password.getText()).toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
@@ -209,13 +211,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 login.setEnabled(false);
                                 Toast.makeText(MainActivity.this,"Welcome "+helperDB.GetUserName().toUpperCase(),
                                         Toast.LENGTH_SHORT).show();
-                                Intent gotomap=new Intent(MainActivity.this,ContainerFrag.class);
-                                gotomap.putExtra(WHO_CALL,R.id.button_login);
-                                startActivity(gotomap);
+                                Intent GoToMap=new Intent(MainActivity.this,ContainerFrag.class);
+                                GoToMap.putExtra(WHO_CALL,R.id.button_login);
+                                startActivity(GoToMap);
                             }else {
                                 user.sendEmailVerification();
                                 Toast.makeText(MainActivity.this,"Check your email to validate your account",
                                         Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                         }else {
                             progressBar.setVisibility(View.INVISIBLE);
@@ -259,9 +262,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     helperDB.insertLogin(new Login(user.getEmail(),user.getDisplayName()));
                                     Toast.makeText(MainActivity.this,"Welcome "+helperDB.GetUserName().toUpperCase(),
                                             Toast.LENGTH_SHORT).show();
-                                    Intent gotomap=new Intent(MainActivity.this,ContainerFrag.class);
-                                    gotomap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
-                                    startActivity(gotomap);
+                                    Intent GoToMap=new Intent(MainActivity.this,ContainerFrag.class);
+                                    GoToMap.putExtra(WHO_CALL,R.id.bt_sign_with_google);
+                                    startActivity(GoToMap);
                                 }else {
                                     progressBar.setVisibility(View.INVISIBLE);
                                     Toast.makeText(MainActivity.this,"Authentication Failed ",

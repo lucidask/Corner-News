@@ -180,17 +180,15 @@ public class ListCircleForDeleteFragment extends Fragment implements OnMapReadyC
         return false;
     }
 
-    public static void deleteAlertInstance(String AlertInstancename){
-        DAO.AlertDatabase.child(AlertInstancename).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+    public static void deleteAlertInstance(String AlertInstanceName){
+        DAO.AlertDatabase.child(AlertInstanceName).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-               DAO.imageMediaDatabase.child(AlertInstancename).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+               DAO.imageMediaDatabase.child(AlertInstanceName).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             DAO.updateDaoAlertInstanceFromDatabase();
-                            DAO.updateDaoMediaFromDatabase();
-                            DAO.updateListCircleListImageAndListVideo();
                         }
                     }
                 });
